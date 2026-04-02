@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const KLAVIYO_COMPANY_ID = "TQGTkc";
+const KLAVIYO_COMPANY_ID = "XGm6Si";
 const KLAVIYO_LIST_ID = "R3YAQh";
 
 const styles = `
