@@ -544,63 +544,66 @@ export default function App() {
   const question = !isResult && screen === "questions" ? QUESTIONS[current] : null;
   const progress = getProgress(current);
 
-  async function handleEmailSubmit(e) {
-    e.preventDefault();
-    const trimmedEmail = emailValue.trim();
+async function handleEmailSubmit(e) {
+  e.preventDefault();
+  const trimmedEmail = emailValue.trim();
 
-    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      setSubmitError("Enter a valid email address to unlock your result.");
-      return;
-    }
+  if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+    setSubmitError("Enter a valid email address to unlock your result.");
+    return;
+  }
 
-    setIsSubmitting(true);
-    setSubmitError("");
+  setIsSubmitting(true);
+  setSubmitError("");
 
-    try {
-      const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          revision: "2023-02-22"
-        },
-        body: JSON.stringify({
-          data: {
-            type: "subscription",
-            attributes: {
-              profile: {
-                data: {
-                  type: "profile",
-                  attributes: {
-                    email: trimmedEmail
-                  }
+  try {
+    const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        revision: "2023-02-22"
+      },
+      body: JSON.stringify({
+        data: {
+          type: "subscription",
+          attributes: {
+            profile: {
+              data: {
+                type: "profile",
+                attributes: {
+                  email: trimmedEmail
                 }
               }
             },
-            relationships: {
-              list: {
-                data: {
+            custom_source: "Protocol Bottleneck Tool"
+          },
+          relationships: {
+            lists: {
+              data: [
+                {
                   type: "list",
                   id: KLAVIYO_LIST_ID
                 }
-              }
+              ]
             }
           }
-        })
-      });
+        }
+      })
+    });
 
-      const data = await response.json().catch(() => null);
+    const data = await response.json().catch(() => null);
 
-      if (!response.ok) {
-        throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
-      }
-
-      setScreen("result");
-    } catch (error) {
-      setSubmitError(error.message || "Something went wrong. Try again in a moment.");
-    } finally {
-      setIsSubmitting(false);
+    if (!response.ok) {
+      throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
     }
+
+    setScreen("result");
+  } catch (error) {
+    setSubmitError(error.message || "Something went wrong. Try again in a moment.");
+  } finally {
+    setIsSubmitting(false);
   }
+}
 
   function routeResult(next) {
     setHistory((h) => [...h, next]);
