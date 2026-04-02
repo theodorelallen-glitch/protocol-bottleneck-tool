@@ -563,33 +563,30 @@ async function handleEmailSubmit(e) {
         "content-type": "application/json",
         revision: "2023-02-22"
       },
-      body: JSON.stringify({
+body: JSON.stringify({
+  data: {
+    type: "subscription",
+    attributes: {
+      custom_source: "Protocol Bottleneck Tool",
+      profile: {
         data: {
-          type: "subscription",
+          type: "profile",
           attributes: {
-            profile: {
-              data: {
-                type: "profile",
-                attributes: {
-                  email: trimmedEmail
-                }
-              }
-            },
-            custom_source: "Protocol Bottleneck Tool"
-          },
-          relationships: {
-            lists: {
-              data: [
-                {
-                  type: "list",
-                  id: KLAVIYO_LIST_ID
-                }
-              ]
-            }
+            email: trimmedEmail
           }
         }
-      })
-    });
+      }
+    },
+    relationships: {
+      list: {
+        data: {
+          type: "list",
+          id: KLAVIYO_LIST_ID
+        }
+      }
+    }
+  }
+});
 
     const data = await response.json().catch(() => null);
 
