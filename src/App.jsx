@@ -1,4 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+
+const KLAVIYO_COMPANY_ID = "TQGTkc";
+const KLAVIYO_LIST_ID = "R3YAQh";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
@@ -55,8 +58,11 @@ const styles = `
   .pt-gate-body { font-size: 14px; line-height: 1.75; color: rgba(232,224,208,0.65); margin-bottom: 32px; }
   .pt-gate-divider { height: 1px; background: rgba(232,224,208,0.1); margin: 0 0 32px; }
   .pt-gate-form-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 16px; }
-  .pt-skip { display: block; text-align: center; margin-top: 20px; font-size: 12px; letter-spacing: 1px; color: rgba(232,224,208,0.4); cursor: pointer; background: none; border: none; font-family: 'Jost', sans-serif; transition: color 0.2s; text-decoration: underline; text-underline-offset: 3px; width: 100%; }
-  .pt-skip:hover { color: rgba(232,224,208,0.7); }
+  .pt-gate-form { display: flex; flex-direction: column; gap: 14px; }
+  .pt-gate-input { width: 100%; background: rgba(0,0,0,0.18); border: 1px solid rgba(232,224,208,0.22); color: #e8e0d0; font-family: 'Jost', sans-serif; font-weight: 300; font-size: 14px; line-height: 1.5; padding: 16px 20px; border-radius: 50px; outline: none; transition: border-color 0.2s, background 0.2s; }
+  .pt-gate-input::placeholder { color: rgba(232,224,208,0.4); }
+  .pt-gate-input:focus { border-color: rgba(232,224,208,0.5); background: rgba(0,0,0,0.24); }
+  .pt-gate-error { font-size: 13px; line-height: 1.6; color: #f2b8b5; margin-top: 2px; }
 
   /* RESULT */
   .pt-result { max-width: 520px; margin: 0 auto; padding: 0 24px; }
@@ -254,7 +260,7 @@ const QUESTIONS = {
       { label: "Tissue repair — injury recovery, connective tissue, or gut health", next: "q_peptide_repair" },
       { label: "Longevity and cellular health — SS-31, MOTS-c, Epithalon, NAD+", next: "q_peptide_longevity" },
       { label: "Cognitive or mood — Semax, Selank, or similar", next: "q_peptide_cog" },
-      { label: "Metabolic or energy output — not GLP-1 based", next: "q_found_sleep" },
+      { label: "Metabolic or energy output", next: "q_found_sleep" },
     ],
   },
   q_peptide_repair: {
@@ -488,91 +494,131 @@ function getProgress(qid) {
   return map[qid] || 50;
 }
 
-function CTABlock() {
+function CTABlock({ mode = "rpb" }) {
+  const isAuditFirst = mode === "audit";
+
   return (
     <div className="pt-cta-block">
-      <div className="pt-cta-label">Go deeper</div>
-      <p className="pt-cta-text">The Research Protocol Bible covers this in full — the diagnostic criteria, the compound logic, what not to add, and the correct sequence. 36 compounds, 7 bottlenecks, all four phases.</p>
-      <a className="pt-pill" href="https://project-theo.com/products/the-research-protocol-bible" target="_blank" rel="noopener noreferrer">View the Research Protocol Bible</a>
-      <a className="pt-pill-outline" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">View Audit Options</a>
+      <div className="pt-cta-label">Next step</div>
+
+      {isAuditFirst ? (
+        <>
+          <p className="pt-cta-text">
+            This is not a simple single-variable issue. The pattern suggests overlapping bottlenecks or a case where sequence matters more than another compound guess. This is exactly what the audit is built for.
+          </p>
+          <a className="pt-pill" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">
+            Go deeper with a Full Audit
+          </a>
+          <a className="pt-pill-outline" href="https://project-theo.com/products/the-research-protocol-bible" target="_blank" rel="noopener noreferrer">
+            Or start with the Research Protocol Bible
+          </a>
+        </>
+      ) : (
+        <>
+          <p className="pt-cta-text">
+            This looks like a framework problem more than a fully custom analysis problem. The Research Protocol Bible covers the bottleneck logic, the compound sequence, what not to add, and the correct next move.
+          </p>
+          <a className="pt-pill" href="https://project-theo.com/products/the-research-protocol-bible" target="_blank" rel="noopener noreferrer">
+            View the Research Protocol Bible
+          </a>
+          <a className="pt-pill-outline" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">
+            Or go deeper with a Full Audit
+          </a>
+        </>
+      )}
     </div>
   );
 }
-
-// ── SCREEN STATES ─────────────────────────────────────────────────────────────
-// "start" → "questions" → "gate" → "result"
 
 export default function App() {
   const [screen, setScreen] = useState("start");
   const [history, setHistory] = useState(["q_start"]);
   const [selected, setSelected] = useState([]);
-  const [pendingResult, setPendingResult] = useState(null);
-  const gateRef = useRef(null);
+  const [emailValue, setEmailValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const current = history[history.length - 1];
   const isMultiResult = current.startsWith("MULTI:");
   const isResult = current.startsWith("r_") || isMultiResult;
-  const question = (!isResult && screen === "questions") ? QUESTIONS[current] : null;
+  const question = !isResult && screen === "questions" ? QUESTIONS[current] : null;
   const progress = getProgress(current);
 
-  // Load Klaviyo script once
-  useEffect(() => {
-    if (document.getElementById("kl-script")) return;
-    const s = document.createElement("script");
-    s.id = "kl-script";
-    s.async = true;
-    s.src = "https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=TQGTkc";
-    document.head.appendChild(s);
-  }, []);
+  async function handleEmailSubmit(e) {
+    e.preventDefault();
+    const trimmedEmail = emailValue.trim();
 
-  // Re-init Klaviyo form when gate screen mounts
-  useEffect(() => {
-    if (screen !== "gate") return;
-    const timer = setTimeout(() => {
-      if (window._klOnsite) window._klOnsite.push(["openForm", "TQGTkc"]);
-      if (window.klaviyo) window.klaviyo.push(["identify", {}]);
-    }, 300);
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setSubmitError("Enter a valid email address to unlock your result.");
+      return;
+    }
 
-    // Listen for submission
-    const handler = (e) => {
-      if (e.detail && (e.detail.type === "submit" || e.detail.type === "submitSuccess")) {
-        setTimeout(() => setScreen("result"), 600);
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          revision: "2023-02-22"
+        },
+        body: JSON.stringify({
+          data: {
+            type: "subscription",
+            attributes: {
+              profile: {
+                data: {
+                  type: "profile",
+                  attributes: {
+                    email: trimmedEmail
+                  }
+                }
+              }
+            },
+            relationships: {
+              list: {
+                data: {
+                  type: "list",
+                  id: KLAVIYO_LIST_ID
+                }
+              }
+            }
+          }
+        })
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
       }
-    };
-    document.addEventListener("klaviyoForms", handler);
 
-    // Also watch DOM for success state
-    const observer = new MutationObserver(() => {
-      const success = document.querySelector(".klaviyo-form-TQGTkc [data-testid='success-component']") ||
-                      document.querySelector(".klaviyo-form-TQGTkc .klaviyo-form-success");
-      if (success) setTimeout(() => setScreen("result"), 600);
-    });
-    if (gateRef.current) observer.observe(gateRef.current, { childList: true, subtree: true });
-
-    return () => {
-      clearTimeout(timer);
-      document.removeEventListener("klaviyoForms", handler);
-      observer.disconnect();
-    };
-  }, [screen]);
+      setScreen("result");
+    } catch (error) {
+      setSubmitError(error.message || "Something went wrong. Try again in a moment.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   function routeResult(next) {
-    setHistory(h => [...h, next]);
+    setHistory((h) => [...h, next]);
     setScreen("gate");
   }
 
   function handleSingle(next) {
     setSelected([]);
-    const isRes = next.startsWith("r_") || next.startsWith("MULTI:");
-    if (isRes) {
+    const targetIsResult = next.startsWith("r_") || next.startsWith("MULTI:");
+    if (targetIsResult) {
       routeResult(next);
     } else {
-      setHistory(h => [...h, next]);
+      setHistory((h) => [...h, next]);
     }
   }
 
   function handleMultiToggle(id) {
-    setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+    setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }
 
   function handleMultiContinue() {
@@ -580,106 +626,139 @@ export default function App() {
     const q = QUESTIONS[current];
     const next = q.multiNext(selected);
     setSelected([]);
-    const isRes = next.startsWith("r_") || next.startsWith("MULTI:");
-    if (isRes) {
+    const targetIsResult = next.startsWith("r_") || next.startsWith("MULTI:");
+    if (targetIsResult) {
       routeResult(next);
     } else {
-      setHistory(h => [...h, next]);
+      setHistory((h) => [...h, next]);
     }
   }
 
   function handleBack() {
     if (history.length > 1) {
       setSelected([]);
-      setHistory(h => h.slice(0, -1));
+      setHistory((h) => h.slice(0, -1));
       if (screen === "gate") setScreen("questions");
     }
   }
 
   function handleRestart() {
     setSelected([]);
+    setEmailValue("");
+    setSubmitError("");
+    setIsSubmitting(false);
     setHistory(["q_start"]);
     setScreen("start");
   }
 
-  // Resolve result data
   const resultKey = history[history.length - 1];
   const isMulti = resultKey.startsWith("MULTI:");
   const multiKey = isMulti ? resultKey.replace("MULTI:", "") : null;
-  const singleResult = (!isMulti && resultKey.startsWith("r_")) ? RESULTS[resultKey] : null;
+  const singleResult = !isMulti && resultKey.startsWith("r_") ? RESULTS[resultKey] : null;
   const multiResult = multiKey ? MULTI_RESULTS[multiKey] : null;
+
+  const singleAuditFirst = ["r_bn02_extended", "r_bn07", "r_bn07_stall", "r_phase4"].includes(resultKey);
 
   return (
     <>
       <style>{styles}</style>
       <div className="pt-wrap">
-
-        {/* HEADER — always visible */}
         <div className="pt-header">
-          <div className="pt-eyebrow">Free Interactive Diagnostic Tool</div>
-          <h1 className="pt-title">Most researchers are treating the wrong bottleneck.</h1>
-          <p className="pt-sell-line">The compound is rarely the problem. The phase, the foundation, and the limiting variable usually are.</p>
-          <p className="pt-sell-sub">This tool runs the same diagnostic framework used in the Research Protocol Bible and identifies exactly where your protocol is failing — and why.</p>
-          <p className="pt-spec-line">4 phases · 7 bottlenecks · 27 possible outcomes · 3 minutes</p>
+          <div className="pt-eyebrow">Free Protocol Diagnostic</div>
+          <h1 className="pt-title">Your protocol is not the problem. Finding the limiting variable is.</h1>
+          <p className="pt-sell-line">
+            Most people do not need another compound. They need a clearer read on what is actually failing.
+          </p>
+          <p className="pt-sell-sub">
+            This tool identifies the likely bottleneck first. Then it routes you to the right next step, whether that is the Research Protocol Bible or a full audit.
+          </p>
+          <p className="pt-spec-line">4 phases · 7 bottlenecks · layered result routing · 3 minutes</p>
           {screen === "start" && (
             <button className="pt-pill" onClick={() => setScreen("questions")}>
-              Start the Diagnostic
+              Find Your Bottleneck
             </button>
           )}
         </div>
 
-        {/* PROGRESS BAR */}
         {screen !== "start" && (
           <div className="pt-progress-bar">
             <div className="pt-progress-fill" style={{ width: `${progress}%` }} />
           </div>
         )}
 
-        {/* QUESTIONS */}
         {screen === "questions" && question && (
           <div className="pt-card fade-in" key={current}>
             <div className="pt-step-label">{question.stepLabel}</div>
             <h2 className="pt-question">{question.question}</h2>
             {question.note && <p className="pt-question-note">{question.note}</p>}
+
             {question.multiSelect ? (
               <>
                 <p className="pt-multi-hint">Select all that apply</p>
                 <div className="pt-multi-options">
-                  {question.options.map(opt => (
-                    <button key={opt.id} className={`pt-option-multi${selected.includes(opt.id) ? " checked" : ""}`} onClick={() => handleMultiToggle(opt.id)}>
+                  {question.options.map((opt) => (
+                    <button
+                      key={opt.id}
+                      className={`pt-option-multi${selected.includes(opt.id) ? " checked" : ""}`}
+                      onClick={() => handleMultiToggle(opt.id)}
+                    >
                       {opt.label}
                     </button>
                   ))}
                 </div>
-                <button className="pt-pill" onClick={handleMultiContinue} disabled={selected.length === 0}>Continue</button>
+                <button className="pt-pill" onClick={handleMultiContinue} disabled={selected.length === 0}>
+                  Continue
+                </button>
               </>
             ) : (
               <div className="pt-options">
                 {question.options.map((opt, i) => (
-                  <button key={i} className="pt-option" onClick={() => handleSingle(opt.next)}>{opt.label}</button>
+                  <button key={i} className="pt-option" onClick={() => handleSingle(opt.next)}>
+                    {opt.label}
+                  </button>
                 ))}
               </div>
             )}
-            {history.length > 1 && <button className="pt-back" onClick={handleBack}>← Go back</button>}
+
+            {history.length > 1 && (
+              <button className="pt-back" onClick={handleBack}>
+                ← Go back
+              </button>
+            )}
           </div>
         )}
 
-        {/* EMAIL GATE */}
         {screen === "gate" && (
-          <div className="pt-gate-screen fade-in" ref={gateRef}>
+          <div className="pt-gate-screen fade-in">
             <div className="pt-gate-eyebrow">Almost there</div>
             <h2 className="pt-gate-title">Your bottleneck has been identified.</h2>
-            <p className="pt-gate-body">Enter your email to unlock your result and receive the free Protocol Stall Guide — a diagnostic framework for the most common Phase 2 fat loss plateau, built on the same system this tool uses.</p>
+            <p className="pt-gate-body">
+              Enter your email to unlock your result and receive the free Protocol Stall Guide — a diagnostic framework for the most common Phase 2 fat loss plateau, built on the same system this tool uses.
+            </p>
             <div className="pt-gate-divider" />
             <div className="pt-gate-form-label">Enter your email to unlock</div>
-            <div className="klaviyo-form-TQGTkc"></div>
-            <button className="pt-skip" onClick={() => setScreen("result")}>
-              Skip — show my result without the guide
-            </button>
+
+            <form className="pt-gate-form" onSubmit={handleEmailSubmit}>
+              <input
+                className="pt-gate-input"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                placeholder="Enter your email"
+                value={emailValue}
+                onChange={(e) => {
+                  setEmailValue(e.target.value);
+                  if (submitError) setSubmitError("");
+                }}
+              />
+              <button className="pt-pill" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Unlocking..." : "Unlock My Result"}
+              </button>
+              {submitError && <p className="pt-gate-error">{submitError}</p>}
+            </form>
           </div>
         )}
 
-        {/* RESULT */}
         {screen === "result" && (
           <>
             {singleResult && (
@@ -687,21 +766,27 @@ export default function App() {
                 <div className="pt-result-tag">{singleResult.tag}</div>
                 <h2 className="pt-result-title">{singleResult.title}</h2>
                 <p className="pt-result-body">{singleResult.body}</p>
+
                 {singleResult.whatItMeans && (
                   <div className="pt-result-what">
                     <div className="pt-result-what-label">What this means for your protocol</div>
                     <p className="pt-result-what-text">{singleResult.whatItMeans}</p>
                   </div>
                 )}
+
                 <div className="pt-divider" />
-                <CTABlock />
-                <button className="pt-restart" onClick={handleRestart}>Start over</button>
+                <CTABlock mode={singleAuditFirst ? "audit" : "rpb"} />
+                <button className="pt-restart" onClick={handleRestart}>
+                  Start over
+                </button>
               </div>
             )}
+
             {multiResult && (
               <div className="pt-result fade-in">
                 <div className="pt-result-tag">{multiResult.tag}</div>
                 <h2 className="pt-result-title">{multiResult.title}</h2>
+
                 {multiResult.bottlenecks.map((bn, i) => (
                   <div className="pt-bn-block" key={i}>
                     <div className="pt-bn-block-tag">{bn.tag}</div>
@@ -709,21 +794,27 @@ export default function App() {
                     <p className="pt-bn-block-body">{bn.body}</p>
                   </div>
                 ))}
+
                 <div className="pt-result-what">
                   <div className="pt-result-what-label">How these interact</div>
                   <p className="pt-result-what-text">{multiResult.interaction}</p>
                 </div>
+
                 <div className="pt-divider" />
-                <CTABlock />
-                <button className="pt-restart" onClick={handleRestart}>Start over</button>
+                <CTABlock mode="audit" />
+                <button className="pt-restart" onClick={handleRestart}>
+                  Start over
+                </button>
               </div>
             )}
           </>
         )}
 
         <p className="pt-disclaimer">
-          For educational and research purposes only. Not medical advice.<br />
-          Not for human use guidance. Consult a qualified medical professional<br />
+          For educational and research purposes only. Not medical advice.
+          <br />
+          Not for human use guidance. Consult a qualified medical professional
+          <br />
           before beginning any research protocol.
         </p>
       </div>
