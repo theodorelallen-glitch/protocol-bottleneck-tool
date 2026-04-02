@@ -476,21 +476,213 @@ const RESULTS = {
 };
 
 const MULTI_RESULTS = {
-  "energy,fatlose": { tag: "Two Active Bottlenecks", title: "Fat loss stalled and energy declining — these two are almost always connected.", bottlenecks: [ { tag: "Bottleneck 02 — Fat Loss Stalled", title: "The limiting variable has shifted from intake to output.", body: "After the initial intake suppression phase, fat loss transitions from appetite-driven to output-driven. The compound has done its primary job. The question is whether the body's fat mobilization capacity is keeping pace with the caloric environment." }, { tag: "Bottleneck 03 — Energy Decline", title: "Energy compression is reducing output capacity at the same time.", body: "When energy declines alongside a fat loss plateau, research suggests the caloric deficit has become too aggressive for the body to sustain output. The intake-side mechanism is working. The output side is being compressed by it." } ], interaction: "These two bottlenecks are almost always the same problem expressed in two ways. The deficit that created fat loss in Phase 1 has become the ceiling on energy output in Phase 2. Addressing one without the other produces a partial result. The RPB covers the Phase 2 compound logic for fat mobilization alongside the energy pattern identification — the sequence matters significantly." },
-  "fatlose,muscle": { tag: "Two Active Bottlenecks", title: "Stalled fat loss while losing muscle — the deficit is working against itself.", bottlenecks: [ { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Fat mobilization capacity is not keeping pace with the deficit.", body: "The intake suppression mechanism has reached its ceiling. The limiting variable has shifted to output — specifically whether the body can mobilize stored fat efficiently at this phase of the protocol." }, { tag: "Bottleneck 01 — Losing Muscle", title: "The caloric deficit is pulling from lean mass as well as fat.", body: "Without a counteracting anabolic signal, sustained caloric restriction breaks down muscle alongside fat. This is not a compound failure — it is the body doing exactly what restricted intake tells it to do when there is no preservation signal." } ], interaction: "This combination is one of the clearest signals that the protocol needs a support layer, not a dose escalation. The fat loss mechanism is working but the body is using muscle as a secondary fuel source. Adding lean mass support before addressing the fat mobilization bottleneck is the correct sequence — otherwise the fat mobilization compound runs on a system that is still losing muscle." },
-  "energy,muscle": { tag: "Two Active Bottlenecks", title: "Low energy and muscle loss together — the deficit is running too deep.", bottlenecks: [ { tag: "Bottleneck 03 — Energy Decline", title: "Output capacity is being compressed by the caloric environment.", body: "Gradual energy decline during a sustained deficit signals that the body's output capacity is being compressed. Research suggests this has three distinct presentations — identifying which one applies changes the compound response significantly." }, { tag: "Bottleneck 01 — Losing Muscle", title: "Lean mass is being broken down alongside fat.", body: "Without an adequate anabolic signal and sufficient protein, the body breaks down muscle for energy alongside fat. This is compounding the energy problem — less lean mass means a lower metabolic floor." } ], interaction: "Low energy and muscle loss in combination almost always signals the deficit is running too aggressively for the recovery system to maintain lean mass. Adding compounds without addressing the underlying deficit-to-recovery ratio tends to accelerate both problems. The RPB covers the correct sequence — lean mass support first, then energy pattern identification." },
-  "energy,mood": { tag: "Two Active Bottlenecks", title: "Low energy and flat mood together — cortisol is likely the upstream driver of both.", bottlenecks: [ { tag: "Bottleneck 03 — Energy Decline", title: "Energy output is being compressed by the protocol environment.", body: "Gradual energy decline during a sustained deficit often involves cortisol elevation as one of the primary mechanisms. The body under prolonged restriction increases cortisol to mobilize energy — and that cortisol elevation becomes its own ceiling." }, { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood and depleted drive are almost always downstream cortisol signals.", body: "Mood and motivation loss during a protocol is almost always a downstream signal of elevated cortisol, hormonal suppression, or energy depletion — not a primary cognitive problem." } ], interaction: "When energy and mood decline together during an extended protocol, the research consistently points to cortisol elevation as the upstream variable driving both. Treating them as separate bottlenecks and adding separate compounds typically produces an unreadable result. The RPB covers the cortisol-driven pattern specifically and how to identify whether this is a cortisol ceiling, hormonal suppression, or pure energy depletion pattern." },
-  "fatlose,mood": { tag: "Two Active Bottlenecks", title: "Stalled fat loss and flat mood — two signals the system is running at its ceiling.", bottlenecks: [ { tag: "Bottleneck 02 — Fat Loss Stalled", title: "The limiting variable has shifted from intake to output.", body: "Fat loss has transitioned past the appetite suppression phase. The question is whether fat mobilization capacity is keeping pace — and whether cortisol elevation from the extended deficit is part of what is limiting it." }, { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood is a downstream signal of an upstream variable.", body: "Mood flatness during an extended protocol is almost always a cortisol or hormonal suppression signal. It tends to appear when the protocol has been running long enough for cumulative restriction stress to become significant." } ], interaction: "A fat loss plateau and mood flatness appearing together is a common presentation at weeks 10 to 16 of an extended protocol. Research suggests both are often downstream effects of a cortisol ceiling that has been quietly building. Addressing the fat loss bottleneck without identifying the cortisol component tends to produce a protocol that looks correct on paper but does not respond." },
-  "fatlose,sleep": { tag: "Two Active Bottlenecks", title: "Stalled fat loss and disrupted sleep — sleep may be the upstream variable for both.", bottlenecks: [ { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Fat mobilization has reached a ceiling.", body: "The intake suppression mechanism has done its work. The question is whether the output side is keeping pace — and whether poor sleep quality is suppressing the metabolic output that fat mobilization depends on." }, { tag: "Bottleneck 04 — Sleep and Recovery", title: "Sleep disruption during a protocol is often a GLP-1 timing issue first.", body: "Sleep disruption that begins or worsens after starting or escalating a compound is worth investigating as a timing or dose variable before assuming it is a standalone bottleneck." } ], interaction: "Poor sleep suppresses growth hormone pulsatility, elevates cortisol, and reduces the metabolic output that fat loss at Phase 2 depends on. When these two appear together, fixing sleep is almost always the correct first move — not adding a fat mobilization compound on top of a system that cannot use it." },
-  "energy,fatlose,muscle": { tag: "Three Active Bottlenecks", title: "Stalled fat loss, muscle loss, and low energy — the protocol is running beyond its recovery ceiling.", bottlenecks: [ { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Fat mobilization capacity is not keeping pace with the deficit.", body: "The intake-side mechanism has reached its ceiling. The body needs a fat mobilization signal — but adding one without addressing the other two active bottlenecks runs it on a system that cannot process the output." }, { tag: "Bottleneck 01 — Losing Muscle", title: "Lean mass is being broken down as a secondary fuel source.", body: "Without an adequate anabolic signal, the body breaks down muscle alongside fat during sustained restriction. This is lowering the metabolic floor and compounding the energy problem." }, { tag: "Bottleneck 03 — Energy Decline", title: "Output capacity is being compressed at the same time.", body: "Energy declining across all three of these patterns simultaneously signals the deficit has become more aggressive than the recovery system can manage." } ], interaction: "This three-bottleneck combination is one of the clearest indicators that the protocol has moved past what a general framework can diagnose from the outside. The interactions are compounding: muscle loss lowers the metabolic floor, which deepens energy suppression, which reduces the body's ability to mobilize fat efficiently. Adding compounds in the wrong order in this situation tends to make the picture worse before it gets better. This is the specific pattern the audit is designed to resolve." },
-  "energy,fatlose,mood": { tag: "Three Active Bottlenecks", title: "Stalled fat loss, low energy, and flat mood — a cortisol ceiling is likely driving all three.", bottlenecks: [ { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Output capacity is the limiting variable.", body: "Fat loss has transitioned to output-driven. The question is whether cortisol elevation from extended restriction is part of what is suppressing fat mobilization." }, { tag: "Bottleneck 03 — Energy Decline", title: "Energy output is being compressed by the caloric environment.", body: "Gradual energy decline during a sustained deficit often involves cortisol as one of the primary mechanisms. The body under prolonged restriction increases cortisol — and that elevation becomes a ceiling." }, { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood is a downstream cortisol or hormonal suppression signal.", body: "Mood flatness during an extended protocol is almost always downstream of elevated cortisol or hormonal suppression — not a standalone problem." } ], interaction: "When all three appear together, the research consistently points to a cortisol ceiling as the variable driving the entire picture. Treating each bottleneck separately and adding three different compounds tends to produce an unreadable result. Identifying the cortisol component first is the correct diagnostic sequence before any compound decision. This is a pattern the audit is specifically structured to diagnose." },
-  "mood,muscle,phase3": { tag: "Phase 3 — Multiple Active Bottlenecks", title: "Training decline, muscle loss, and mood flatness together — Phase 3 with compounding signals.", bottlenecks: [ { tag: "Phase 3 — Recovery Strain", title: "The system is under recovery strain from sustained restriction and training load.", body: "Phase 3 occurs when the caloric deficit that drove fat loss in Phase 2 becomes the ceiling on recovery capacity. Training performance declines because the body cannot recover fast enough between sessions." }, { tag: "Bottleneck 01 — Losing Muscle", title: "Lean mass is being broken down alongside the recovery strain.", body: "In Phase 3, lean mass preservation becomes critical. Without an adequate anabolic signal, the combination of caloric restriction and training load accelerates muscle breakdown." }, { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood at this stage is almost always a downstream cortisol signal.", body: "Phase 3 increases cortisol load from both the deficit and the training stimulus. Mood and drive flatness here is a physiological signal — not a willpower issue." } ], interaction: "This combination in Phase 3 is a systemic problem, not three separate bottlenecks. The recovery strain is creating the conditions for muscle loss, and the cortisol elevation from both the deficit and the training load is producing the mood suppression. Adding compounds without first adjusting the protocol structure typically makes all three worse. The RPB covers Phase 3 compound logic specifically for this presentation." },
+  "energy,fatlose": {
+    tag: "Two Active Bottlenecks",
+    title: "Fat loss stalled and energy declining — these two are almost always connected.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 02 — Fat Loss Stalled",
+        title: "The limiting variable has shifted from intake to output.",
+        body: "After the initial intake suppression phase, fat loss transitions from appetite-driven to output-driven. The compound has done its primary job. The question is whether the body's fat mobilization capacity is keeping pace with the caloric environment."
+      },
+      {
+        tag: "Bottleneck 03 — Energy Decline",
+        title: "Energy compression is reducing output capacity at the same time.",
+        body: "When energy declines alongside a fat loss plateau, research suggests the caloric deficit has become too aggressive for the body to sustain output. The intake-side mechanism is working. The output side is being compressed by it."
+      }
+    ],
+    interaction: "These two bottlenecks are almost always the same problem expressed in two ways. The deficit that created fat loss in Phase 1 has become the ceiling on energy output in Phase 2. Addressing one without the other produces a partial result. The RPB covers the Phase 2 compound logic for fat mobilization alongside the energy pattern identification — the sequence matters significantly."
+  },
+  "fatlose,muscle": {
+    tag: "Two Active Bottlenecks",
+    title: "Stalled fat loss while losing muscle — the deficit is working against itself.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 02 — Fat Loss Stalled",
+        title: "Fat mobilization capacity is not keeping pace with the deficit.",
+        body: "The intake suppression mechanism has reached its ceiling. The limiting variable has shifted to output — specifically whether the body can mobilize stored fat efficiently at this phase of the protocol."
+      },
+      {
+        tag: "Bottleneck 01 — Losing Muscle",
+        title: "The caloric deficit is pulling from lean mass as well as fat.",
+        body: "Without a counteracting anabolic signal, sustained caloric restriction breaks down muscle alongside fat. This is not a compound failure — it is the body doing exactly what restricted intake tells it to do when there is no preservation signal."
+      }
+    ],
+    interaction: "This combination is one of the clearest signals that the protocol needs a support layer, not a dose escalation. The fat loss mechanism is working but the body is using muscle as a secondary fuel source. Adding lean mass support before addressing the fat mobilization bottleneck is the correct sequence — otherwise the fat mobilization compound runs on a system that is still losing muscle."
+  },
+  "energy,muscle": {
+    tag: "Two Active Bottlenecks",
+    title: "Low energy and muscle loss together — the deficit is running too deep.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 03 — Energy Decline",
+        title: "Output capacity is being compressed by the caloric environment.",
+        body: "Gradual energy decline during a sustained deficit signals that the body's output capacity is being compressed. Research suggests this has three distinct presentations — identifying which one applies changes the compound response significantly."
+      },
+      {
+        tag: "Bottleneck 01 — Losing Muscle",
+        title: "Lean mass is being broken down alongside fat.",
+        body: "Without an adequate anabolic signal and sufficient protein, the body breaks down muscle for energy alongside fat. This is compounding the energy problem — less lean mass means a lower metabolic floor."
+      }
+    ],
+    interaction: "Low energy and muscle loss in combination almost always signals the deficit is running too aggressively for the recovery system to maintain lean mass. Adding compounds without addressing the underlying deficit-to-recovery ratio tends to accelerate both problems. The RPB covers the correct sequence — lean mass support first, then energy pattern identification."
+  },
+  "energy,mood": {
+    tag: "Two Active Bottlenecks",
+    title: "Low energy and flat mood together — cortisol is likely the upstream driver of both.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 03 — Energy Decline",
+        title: "Energy output is being compressed by the protocol environment.",
+        body: "Gradual energy decline during a sustained deficit often involves cortisol elevation as one of the primary mechanisms. The body under prolonged restriction increases cortisol to mobilize energy — and that cortisol elevation becomes its own ceiling."
+      },
+      {
+        tag: "Bottleneck 06 — Mood and Motivation",
+        title: "Flat mood and depleted drive are almost always downstream cortisol signals.",
+        body: "Mood and motivation loss during a protocol is almost always a downstream signal of elevated cortisol, hormonal suppression, or energy depletion — not a primary cognitive problem."
+      }
+    ],
+    interaction: "When energy and mood decline together during an extended protocol, the research consistently points to cortisol elevation as the upstream variable driving both. Treating them as separate bottlenecks and adding separate compounds typically produces an unreadable result. The RPB covers the cortisol-driven pattern specifically and how to identify whether this is a cortisol ceiling, hormonal suppression, or pure energy depletion pattern."
+  },
+  "fatlose,mood": {
+    tag: "Two Active Bottlenecks",
+    title: "Stalled fat loss and flat mood — two signals the system is running at its ceiling.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 02 — Fat Loss Stalled",
+        title: "The limiting variable has shifted from intake to output.",
+        body: "Fat loss has transitioned past the appetite suppression phase. The question is whether fat mobilization capacity is keeping pace — and whether cortisol elevation from the extended deficit is part of what is limiting it."
+      },
+      {
+        tag: "Bottleneck 06 — Mood and Motivation",
+        title: "Flat mood is a downstream signal of an upstream variable.",
+        body: "Mood flatness during an extended protocol is almost always a cortisol or hormonal suppression signal. It tends to appear when the protocol has been running long enough for cumulative restriction stress to become significant."
+      }
+    ],
+    interaction: "A fat loss plateau and mood flatness appearing together is a common presentation at weeks 10 to 16 of an extended protocol. Research suggests both are often downstream effects of a cortisol ceiling that has been quietly building. Addressing the fat loss bottleneck without identifying the cortisol component tends to produce a protocol that looks correct on paper but does not respond."
+  },
+  "fatlose,sleep": {
+    tag: "Two Active Bottlenecks",
+    title: "Stalled fat loss and disrupted sleep — sleep may be the upstream variable for both.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 02 — Fat Loss Stalled",
+        title: "Fat mobilization has reached a ceiling.",
+        body: "The intake suppression mechanism has done its work. The question is whether the output side is keeping pace — and whether poor sleep quality is suppressing the metabolic output that fat mobilization depends on."
+      },
+      {
+        tag: "Bottleneck 04 — Sleep and Recovery",
+        title: "Sleep disruption during a protocol is often a GLP-1 timing issue first.",
+        body: "Sleep disruption that begins or worsens after starting or escalating a compound is worth investigating as a timing or dose variable before assuming it is a standalone bottleneck."
+      }
+    ],
+    interaction: "Poor sleep suppresses growth hormone pulsatility, elevates cortisol, and reduces the metabolic output that fat loss at Phase 2 depends on. When these two appear together, fixing sleep is almost always the correct first move — not adding a fat mobilization compound on top of a system that cannot use it."
+  },
+  "energy,fatlose,muscle": {
+    tag: "Three Active Bottlenecks",
+    title: "Stalled fat loss, muscle loss, and low energy — the protocol is running beyond its recovery ceiling.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 02 — Fat Loss Stalled",
+        title: "Fat mobilization capacity is not keeping pace with the deficit.",
+        body: "The intake-side mechanism has reached its ceiling. The body needs a fat mobilization signal — but adding one without addressing the other two active bottlenecks runs it on a system that cannot process the output."
+      },
+      {
+        tag: "Bottleneck 01 — Losing Muscle",
+        title: "Lean mass is being broken down as a secondary fuel source.",
+        body: "Without an adequate anabolic signal, the body breaks down muscle alongside fat during sustained restriction. This is lowering the metabolic floor and compounding the energy problem."
+      },
+      {
+        tag: "Bottleneck 03 — Energy Decline",
+        title: "Output capacity is being compressed at the same time.",
+        body: "Energy declining across all three of these patterns simultaneously signals the deficit has become more aggressive than the recovery system can manage."
+      }
+    ],
+    interaction: "This three-bottleneck combination is one of the clearest indicators that the protocol has moved past what a general framework can diagnose from the outside. The interactions are compounding: muscle loss lowers the metabolic floor, which deepens energy suppression, which reduces the body's ability to mobilize fat efficiently. Adding compounds in the wrong order in this situation tends to make the picture worse before it gets better. This is the specific pattern the audit is designed to resolve."
+  },
+  "energy,fatlose,mood": {
+    tag: "Three Active Bottlenecks",
+    title: "Stalled fat loss, low energy, and flat mood — a cortisol ceiling is likely driving all three.",
+    bottlenecks: [
+      {
+        tag: "Bottleneck 02 — Fat Loss Stalled",
+        title: "Output capacity is the limiting variable.",
+        body: "Fat loss has transitioned to output-driven. The question is whether cortisol elevation from extended restriction is part of what is suppressing fat mobilization."
+      },
+      {
+        tag: "Bottleneck 03 — Energy Decline",
+        title: "Energy output is being compressed by the caloric environment.",
+        body: "Gradual energy decline during a sustained deficit often involves cortisol as one of the primary mechanisms. The body under prolonged restriction increases cortisol — and that elevation becomes a ceiling."
+      },
+      {
+        tag: "Bottleneck 06 — Mood and Motivation",
+        title: "Flat mood is a downstream cortisol or hormonal suppression signal.",
+        body: "Mood flatness during an extended protocol is almost always downstream of elevated cortisol or hormonal suppression — not a standalone problem."
+      }
+    ],
+    interaction: "When all three appear together, the research consistently points to a cortisol ceiling as the variable driving the entire picture. Treating each bottleneck separately and adding three different compounds tends to produce an unreadable result. Identifying the cortisol component first is the correct diagnostic sequence before any compound decision. This is a pattern the audit is specifically structured to diagnose."
+  },
+  "mood,muscle,phase3": {
+    tag: "Phase 3 — Multiple Active Bottlenecks",
+    title: "Training decline, muscle loss, and mood flatness together — Phase 3 with compounding signals.",
+    bottlenecks: [
+      {
+        tag: "Phase 3 — Recovery Strain",
+        title: "The system is under recovery strain from sustained restriction and training load.",
+        body: "Phase 3 occurs when the caloric deficit that drove fat loss in Phase 2 becomes the ceiling on recovery capacity. Training performance declines because the body cannot recover fast enough between sessions."
+      },
+      {
+        tag: "Bottleneck 01 — Losing Muscle",
+        title: "Lean mass is being broken down alongside the recovery strain.",
+        body: "In Phase 3, lean mass preservation becomes critical. Without an adequate anabolic signal, the combination of caloric restriction and training load accelerates muscle breakdown."
+      },
+      {
+        tag: "Bottleneck 06 — Mood and Motivation",
+        title: "Flat mood at this stage is almost always a downstream cortisol signal.",
+        body: "Phase 3 increases cortisol load from both the deficit and the training stimulus. Mood and drive flatness here is a physiological signal — not a willpower issue."
+      }
+    ],
+    interaction: "This combination in Phase 3 is a systemic problem, not three separate bottlenecks. The recovery strain is creating the conditions for muscle loss, and the cortisol elevation from both the deficit and the training load is producing the mood suppression. Adding compounds without first adjusting the protocol structure typically makes all three worse. The RPB covers Phase 3 compound logic specifically for this presentation."
+  }
 };
 
 function getProgress(qid) {
   if (!qid) return 0;
   if (qid.startsWith("r_") || qid.startsWith("MULTI:")) return 100;
-  const map = { q_start: 5, q_glp1_duration: 15, q_glp1_early: 20, q_glp1_status: 20, q_glp1_no_start: 25, q_glp1_stall_context: 28, q_glp1_caloric: 32, q_p3_training: 28, q_p4_sleep: 28, q_gh_duration: 15, q_gh_early: 20, q_gh_results: 22, q_gh_environment: 35, q_gh_timing: 35, q_gh_sleep: 42, q_peptide_type: 15, q_peptide_repair: 25, q_peptide_repair_found: 35, q_peptide_longevity: 25, q_peptide_cog: 25, q_peptide_cog_cause: 35, q_found_sleep: 48, q_found_sleep_p3: 48, q_found_stimulant: 58, q_found_stimulant_p3: 58, q_found_protein: 68, q_found_protein_p3: 68, q_bn_main: 78, q_bn_p3: 78, q_fatlose_dose: 86, q_fatlose_duration: 92, q_energy_timing: 88 };
+  const map = {
+    q_start: 5,
+    q_glp1_duration: 15,
+    q_glp1_early: 20,
+    q_glp1_status: 20,
+    q_glp1_no_start: 25,
+    q_glp1_stall_context: 28,
+    q_glp1_caloric: 32,
+    q_p3_training: 28,
+    q_p4_sleep: 28,
+    q_gh_duration: 15,
+    q_gh_early: 20,
+    q_gh_results: 22,
+    q_gh_environment: 35,
+    q_gh_timing: 35,
+    q_gh_sleep: 42,
+    q_peptide_type: 15,
+    q_peptide_repair: 25,
+    q_peptide_repair_found: 35,
+    q_peptide_longevity: 25,
+    q_peptide_cog: 25,
+    q_peptide_cog_cause: 35,
+    q_found_sleep: 48,
+    q_found_sleep_p3: 48,
+    q_found_stimulant: 58,
+    q_found_stimulant_p3: 58,
+    q_found_protein: 68,
+    q_found_protein_p3: 68,
+    q_bn_main: 78,
+    q_bn_p3: 78,
+    q_fatlose_dose: 86,
+    q_fatlose_duration: 92,
+    q_energy_timing: 88
+  };
   return map[qid] || 50;
 }
 
@@ -544,62 +736,64 @@ export default function App() {
   const question = !isResult && screen === "questions" ? QUESTIONS[current] : null;
   const progress = getProgress(current);
 
-async function handleEmailSubmit(e) {
-  e.preventDefault();
-  const trimmedEmail = emailValue.trim();
+  async function handleEmailSubmit(e) {
+    e.preventDefault();
+    const trimmedEmail = emailValue.trim();
 
-  if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-    setSubmitError("Enter a valid email address to unlock your result.");
-    return;
-  }
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setSubmitError("Enter a valid email address to unlock your result.");
+      return;
+    }
 
-  setIsSubmitting(true);
-  setSubmitError("");
+    setIsSubmitting(true);
+    setSubmitError("");
 
-  try {
-    const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        revision: "2023-02-22"
-      },
-body: JSON.stringify({
-  data: {
-    type: "subscription",
-    attributes: {
-      custom_source: "Protocol Bottleneck Tool",
-      profile: {
-        data: {
-          type: "profile",
-          attributes: {
-            email: trimmedEmail
+    try {
+      const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          revision: "2023-02-22"
+        },
+        body: JSON.stringify({
+          data: {
+            type: "subscription",
+            attributes: {
+              custom_source: "Protocol Bottleneck Tool",
+              profile: {
+                data: {
+                  type: "profile",
+                  attributes: {
+                    email: trimmedEmail
+                  }
+                }
+              }
+            },
+            relationships: {
+              list: {
+                data: {
+                  type: "list",
+                  id: KLAVIYO_LIST_ID
+                }
+              }
+            }
           }
-        }
+        })
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
       }
-    },
-    relationships: {
-      list: {
-        data: {
-          type: "list",
-          id: KLAVIYO_LIST_ID
-        }
-      }
+
+      setScreen("result");
+    } catch (error) {
+      setSubmitError(error.message || "Something went wrong. Try again in a moment.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
-})
-});
-
-    if (!response.ok) {
-      throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
-    }
-
-    setScreen("result");
-  } catch (error) {
-    setSubmitError(error.message || "Something went wrong. Try again in a moment.");
-  } finally {
-    setIsSubmitting(false);
-  }
-}
 
   function routeResult(next) {
     setHistory((h) => [...h, next]);
