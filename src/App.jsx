@@ -577,16 +577,14 @@ body: JSON.stringify({
         }
       }
     },
-    relationships: {
-      list: {
-        data: {
-          type: "list",
-          id: KLAVIYO_LIST_ID
-        }
-      }
+   relationships: {
+  list: {
+    data: {
+      type: "list",
+      id: KLAVIYO_LIST_ID
     }
   }
-});
+};
 
     const data = await response.json().catch(() => null);
 
