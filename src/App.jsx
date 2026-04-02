@@ -577,16 +577,17 @@ body: JSON.stringify({
         }
       }
     },
-   relationships: {
-  list: {
-    data: {
-      type: "list",
-      id: KLAVIYO_LIST_ID
+    relationships: {
+      list: {
+        data: {
+          type: "list",
+          id: KLAVIYO_LIST_ID
+        }
+      }
     }
   }
-};
-
-    const data = await response.json().catch(() => null);
+})
+});
 
     if (!response.ok) {
       throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
