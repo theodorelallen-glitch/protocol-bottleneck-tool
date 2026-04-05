@@ -797,7 +797,7 @@ export default function App() {
 
   function routeResult(next) {
     setHistory((h) => [...h, next]);
-    setScreen("gate");
+    setScreen("result");
   }
 
   function handleSingle(next) {
