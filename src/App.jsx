@@ -701,8 +701,8 @@ function CTABlock({ mode = "rpb" }) {
           <a className="pt-pill" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">
             Go deeper with a Full Audit
           </a>
-          <a className="pt-pill-outline" href="https://project-theo.com/products/the-research-protocol-bible" target="_blank" rel="noopener noreferrer">
-            Or start with the Research Protocol Bible
+          <a className="pt-pill-outline" href="https://project-theo.com/collections/browse-research-guides" target="_blank" rel="noopener noreferrer">
+            Or browse the research library
           </a>
         </>
       ) : (
@@ -710,8 +710,8 @@ function CTABlock({ mode = "rpb" }) {
           <p className="pt-cta-text">
             This looks like a framework problem more than a fully custom analysis problem. The Research Protocol Bible covers the bottleneck logic, the compound sequence, what not to add, and the correct next move.
           </p>
-          <a className="pt-pill" href="https://project-theo.com/products/the-research-protocol-bible" target="_blank" rel="noopener noreferrer">
-            View the Research Protocol Bible
+          <a className="pt-pill" href="https://project-theo.com/collections/browse-research-guides" target="_blank" rel="noopener noreferrer">
+            View the Research Guide Library
           </a>
           <a className="pt-pill-outline" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">
             Or go deeper with a Full Audit
