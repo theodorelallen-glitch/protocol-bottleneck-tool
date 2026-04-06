@@ -2,7 +2,27 @@ import { useState } from "react";
 
 const KLAVIYO_COMPANY_ID = "XGm6Si";
 const KLAVIYO_LIST_ID = "R3YAQh";
-
+async function trackResultEvent(resultKey) {
+  try {
+    await fetch(`https://a.klaviyo.com/client/events/?company_id=${KLAVIYO_COMPANY_ID}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        revision: "2024-02-15"
+      },
+      body: JSON.stringify({
+        data: {
+          type: "event",
+          attributes: {
+            metric: { data: { type: "metric", attributes: { name: "Protocol Tool Result" } } },
+            properties: { result_key: resultKey },
+            profile: { data: { type: "profile", attributes: {} } }
+          }
+        }
+      })
+    });
+  } catch (e) {}
+}
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -797,6 +817,7 @@ export default function App() {
 
   function routeResult(next) {
     setHistory((h) => [...h, next]);
+    trackResultEvent(next);
     setScreen("gate");
   }
 
