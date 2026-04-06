@@ -818,7 +818,6 @@ setScreen("result");
 
   function routeResult(next) {
     setHistory((h) => [...h, next]);
-    trackResultEvent(next);
     setScreen("gate");
   }
 
