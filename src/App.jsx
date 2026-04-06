@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const KLAVIYO_COMPANY_ID = "XGm6Si";
 const KLAVIYO_LIST_ID = "R3YAQh";
-async function trackResultEvent(resultKey) {
+async function trackResultEvent(resultKey, email) {
   try {
     await fetch(`https://a.klaviyo.com/client/events/?company_id=${KLAVIYO_COMPANY_ID}`, {
       method: "POST",
@@ -16,7 +16,7 @@ async function trackResultEvent(resultKey) {
           attributes: {
             metric: { data: { type: "metric", attributes: { name: "Protocol Tool Result" } } },
             properties: { result_key: resultKey },
-            profile: { data: { type: "profile", attributes: {} } }
+            profile: { data: { type: "profile", attributes: { email: email } } }
           }
         }
       })
@@ -807,7 +807,8 @@ export default function App() {
         throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
       }
 
-      setScreen("result");
+      trackResultEvent(history[history.length - 1], trimmedEmail);
+setScreen("result");
     } catch (error) {
       setSubmitError(error.message || "Something went wrong. Try again in a moment.");
     } finally {
