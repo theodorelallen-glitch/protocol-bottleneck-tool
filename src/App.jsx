@@ -2,20 +2,19 @@ import { useState } from "react";
 
 const KLAVIYO_COMPANY_ID = "XGm6Si";
 const KLAVIYO_LIST_ID = "R3YAQh";
-async function trackResultEvent(resultKey, email) {
-  try {
-    await fetch(`https://a.klaviyo.com/client/events/?company_id=${KLAVIYO_COMPANY_ID}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        const GUIDES = {
+
+const GUIDES = {
   rpb: { label: "The Research Protocol Bible — $97", url: "https://project-theo.com/products/the-research-protocol-bible" },
   reta: { label: "Retatrutide: From First Dose to Full Protocol — $39.99", url: "https://project-theo.com/products/retatrutide-from-first-dose-to-full-protocol" },
   stack: { label: "Retatrutide, Tesamorelin, and Ipamorelin Guide — $29.99", url: "https://project-theo.com/products/retatrutide-tesamorelin-and-ipamorelin" },
   motsc: { label: "MOTS-C and SS-31 Guide — $39.99", url: "https://project-theo.com/products/motsc-ss31" },
 };
-        revision: "2024-02-15"
-      },
+
+async function trackResultEvent(resultKey, email) {
+  try {
+    await fetch(`https://a.klaviyo.com/client/events/?company_id=${KLAVIYO_COMPANY_ID}`, {
+      method: "POST",
+      headers: { "content-type": "application/json", revision: "2024-02-15" },
       body: JSON.stringify({
         data: {
           type: "event",
@@ -29,36 +28,27 @@ async function trackResultEvent(resultKey, email) {
     });
   } catch (e) {}
 }
+
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
   .pt-wrap { background: #2c2e24; color: #e8e0d0; font-family: 'Jost', sans-serif; font-weight: 300; min-height: 100vh; padding: 0 0 80px 0; }
-
-  /* HEADER */
   .pt-header { padding: 52px 24px 48px; border-bottom: 1px solid rgba(232,224,208,0.15); margin-bottom: 44px; max-width: 520px; margin-left: auto; margin-right: auto; }
   .pt-eyebrow { font-family: 'Jost', sans-serif; font-weight: 500; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.6); margin-bottom: 22px; }
   .pt-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(38px, 8vw, 58px); line-height: 1.05; color: #e8e0d0; margin-bottom: 22px; }
   .pt-sell-line { font-size: 15px; line-height: 1.75; color: rgba(232,224,208,0.75); margin-bottom: 12px; }
   .pt-sell-sub { font-size: 14px; line-height: 1.75; color: rgba(232,224,208,0.55); margin-bottom: 30px; }
   .pt-spec-line { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,224,208,0.4); margin-bottom: 36px; }
-
-  /* PROGRESS */
   .pt-progress-bar { height: 2px; background: rgba(232,224,208,0.12); margin: 0 24px 44px; border-radius: 2px; overflow: hidden; }
   .pt-progress-fill { height: 100%; background: #e8e0d0; border-radius: 2px; transition: width 0.5s ease; }
-
-  /* QUESTION CARD */
   .pt-card { max-width: 520px; margin: 0 auto; padding: 0 24px; }
   .pt-step-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 14px; }
   .pt-question { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(22px, 5vw, 30px); line-height: 1.25; color: #e8e0d0; margin-bottom: 12px; }
   .pt-question-note { font-size: 13px; color: rgba(232,224,208,0.5); line-height: 1.65; margin-bottom: 28px; font-style: italic; }
   .pt-multi-hint { font-size: 10px; color: rgba(232,224,208,0.45); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
-
-  /* SINGLE SELECT */
   .pt-options { display: flex; flex-direction: column; gap: 10px; }
   .pt-option { background: rgba(232,224,208,0.06); border: 1px solid rgba(232,224,208,0.18); color: #e8e0d0; font-family: 'Jost', sans-serif; font-weight: 300; font-size: 14px; line-height: 1.55; padding: 16px 20px; text-align: left; cursor: pointer; border-radius: 2px; transition: all 0.2s ease; width: 100%; }
   .pt-option:hover { background: rgba(232,224,208,0.12); border-color: rgba(232,224,208,0.45); }
-
-  /* MULTI SELECT */
   .pt-multi-options { display: flex; flex-direction: column; gap: 10px; }
   .pt-option-multi { background: rgba(232,224,208,0.06); border: 1px solid rgba(232,224,208,0.18); color: #e8e0d0; font-family: 'Jost', sans-serif; font-weight: 300; font-size: 14px; line-height: 1.55; padding: 15px 20px 15px 50px; text-align: left; cursor: pointer; border-radius: 2px; transition: all 0.2s ease; width: 100%; position: relative; }
   .pt-option-multi::before { content: ''; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border: 1px solid rgba(232,224,208,0.35); border-radius: 2px; transition: all 0.2s; }
@@ -66,18 +56,11 @@ const styles = `
   .pt-option-multi.checked::before { background: #e8e0d0; border-color: #e8e0d0; }
   .pt-option-multi.checked::after { content: '✓'; position: absolute; left: 19px; top: 50%; transform: translateY(-52%); font-size: 10px; color: #2c2e24; font-weight: 700; }
   .pt-option-multi:hover { background: rgba(232,224,208,0.1); border-color: rgba(232,224,208,0.35); }
-
-  /* PILL BUTTONS */
   .pt-pill { display: block; background: #e8e0d0; color: #2c2e24; font-family: 'Jost', sans-serif; font-weight: 400; font-size: 14px; letter-spacing: 0.5px; padding: 17px 32px; text-align: center; cursor: pointer; border: none; border-radius: 50px; width: 100%; margin-top: 22px; transition: opacity 0.2s, transform 0.15s; text-decoration: none; }
   .pt-pill:hover { opacity: 0.88; transform: translateY(-1px); }
   .pt-pill:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
-  .pt-pill-outline { display: block; background: transparent; color: rgba(232,224,208,0.75); font-family: 'Jost', sans-serif; font-weight: 300; font-size: 14px; letter-spacing: 0.5px; padding: 16px 32px; text-align: center; cursor: pointer; border: 1px solid rgba(232,224,208,0.3); border-radius: 50px; width: 100%; margin-top: 12px; transition: all 0.2s; text-decoration: none; }
-  .pt-pill-outline:hover { border-color: rgba(232,224,208,0.6); color: #e8e0d0; transform: translateY(-1px); }
-
   .pt-back { background: none; border: none; color: rgba(232,224,208,0.4); font-family: 'Jost', sans-serif; font-size: 12px; letter-spacing: 1px; cursor: pointer; padding: 0; margin-top: 24px; display: block; transition: color 0.2s; }
   .pt-back:hover { color: rgba(232,224,208,0.75); }
-
-  /* EMAIL GATE SCREEN */
   .pt-gate-screen { max-width: 520px; margin: 0 auto; padding: 0 24px; }
   .pt-gate-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 16px; }
   .pt-gate-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(28px, 6vw, 42px); line-height: 1.1; color: #e8e0d0; margin-bottom: 18px; }
@@ -89,33 +72,24 @@ const styles = `
   .pt-gate-input::placeholder { color: rgba(232,224,208,0.4); }
   .pt-gate-input:focus { border-color: rgba(232,224,208,0.5); background: rgba(0,0,0,0.24); }
   .pt-gate-error { font-size: 13px; line-height: 1.6; color: #f2b8b5; margin-top: 2px; }
-
-  /* RESULT */
   .pt-result { max-width: 520px; margin: 0 auto; padding: 0 24px; }
   .pt-result-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 14px; }
   .pt-result-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(26px, 5.5vw, 40px); line-height: 1.15; color: #e8e0d0; margin-bottom: 20px; }
   .pt-result-body { font-size: 14px; line-height: 1.85; color: rgba(232,224,208,0.75); margin-bottom: 16px; }
-
   .pt-bn-block { margin: 20px 0; padding: 22px; border: 1px solid rgba(232,224,208,0.12); border-radius: 2px; }
   .pt-bn-block-tag { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,224,208,0.4); margin-bottom: 8px; }
   .pt-bn-block-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; color: #e8e0d0; margin-bottom: 10px; line-height: 1.2; }
   .pt-bn-block-body { font-size: 13px; line-height: 1.8; color: rgba(232,224,208,0.65); }
-
   .pt-result-what { border-left: 2px solid rgba(232,224,208,0.22); padding-left: 18px; margin: 28px 0; }
   .pt-result-what-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 10px; }
   .pt-result-what-text { font-size: 14px; line-height: 1.8; color: rgba(232,224,208,0.65); font-style: italic; }
-
   .pt-divider { height: 1px; background: rgba(232,224,208,0.1); margin: 32px 0; }
-
   .pt-cta-block { background: rgba(232,224,208,0.05); border: 1px solid rgba(232,224,208,0.12); padding: 28px 24px; margin-top: 36px; border-radius: 2px; }
   .pt-cta-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 12px; }
   .pt-cta-text { font-size: 14px; line-height: 1.75; color: rgba(232,224,208,0.65); margin-bottom: 22px; }
-
   .pt-restart { display: block; text-align: center; margin-top: 40px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,224,208,0.35); cursor: pointer; background: none; border: none; font-family: 'Jost', sans-serif; transition: color 0.2s; }
   .pt-restart:hover { color: rgba(232,224,208,0.6); }
-
   .pt-disclaimer { text-align: center; font-size: 10px; color: rgba(232,224,208,0.3); letter-spacing: 1px; margin-top: 52px; line-height: 1.8; padding: 0 24px; }
-
   .fade-in { animation: fadeIn 0.4s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 `;
@@ -474,31 +448,31 @@ const RESULTS = {
   r_foundation_sleep: { tag: "Foundation Gate — Sleep", title: "Sleep is the first intervention, not a compound addition.", body: "Sleep deprivation suppresses growth hormone pulsatility, elevates cortisol, and disrupts the metabolic signaling that compounds are designed to work within. Adding a compound on top of chronic sleep deprivation produces a fraction of the documented effect because the environment is actively working against it.", whatItMeans: "Before anything else, check whether GLP-1 injection timing or a recent dose escalation is contributing to the sleep disruption. A timing adjustment frequently resolves the problem without any compound addition." },
   r_foundation_stimulant: { tag: "Foundation Gate — Stimulant Load", title: "Daily stimulant use is contaminating the protocol read.", body: "Using stimulants daily to reach baseline energy elevates cortisol and creates ongoing oxidative stress. This sets a physiological ceiling on what any metabolic compound can accomplish. Research suggests this is one of the most underreported variables in protocol failure.", whatItMeans: "The experiment cannot produce a clean result while this input is active. Reducing stimulant frequency alongside sleep correction is the first rational move — not a compound addition." },
   r_foundation_protein: { tag: "Foundation Gate — Protein", title: "Protein intake has dropped with appetite — and lean mass is paying for it.", body: "GLP-1 compounds suppress appetite broadly, which often pulls protein intake down alongside caloric intake. If total protein has dropped below roughly 0.7g per pound of lean body mass, lean mass preservation becomes the primary issue.", whatItMeans: "Correcting protein intake before adding a lean mass support compound produces a cleaner result. Adding it on top of inadequate protein does not solve the upstream problem." },
-  r_bn01: { tag: "Bottleneck 01 — Losing Muscle", title: "The limiting variable is lean mass — the body is breaking down muscle alongside fat.", body: "When running a significant caloric deficit, the body breaks down muscle tissue for energy — especially when protein intake is low or training stimulus is not strong enough to send a preservation signal. This is not a failure of the compound. It is the body doing exactly what sustained caloric restriction tells it to do when there is no counteracting anabolic signal.", whatItMeans: "The RPB covers the complete lean mass bottleneck protocol — which GH secretagogue combinations the research supports, what to check on the GLP-1 side first, and the correct sequence for introducing lean mass support." },
-  r_bn02_early: { tag: "Bottleneck 02 — Fat Loss Stalled", title: "The stall is recent — a GLP-1 audit should run before any protocol change.", body: "A stall under 3 weeks is within normal variation for most protocols. Research suggests running three checks before interpreting it as a bottleneck: precise caloric tracking for 7 days, dose and timing review, and compound-specific stall pattern assessment.", whatItMeans: "The RPB walks through all three checks and the compound-specific stall patterns for semaglutide, tirzepatide, and retatrutide in the Phase 2 section." },
-  r_bn02: { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Phase 2 fat loss bottleneck — the limiting variable has shifted from intake to output.", body: "After the initial intake suppression phase, fat loss transitions from appetite-driven to output-driven. The compound has done its primary job. The question becomes whether the body's fat mobilization capacity is keeping pace with the caloric environment.", whatItMeans: "The RPB covers the full Phase 2 protocol — which fat mobilization compounds the research supports, what not to add, and how to sequence the response correctly." },
-  r_bn02_extended: { tag: "Bottleneck 02 — Extended Stall", title: "An extended stall may involve overlapping bottlenecks.", body: "A plateau lasting more than 6 weeks that has not responded to standard Phase 2 interventions often involves more than one active bottleneck — or a phase read that looked accurate but had a second variable running underneath it.", whatItMeans: "The RPB gives you the framework for identifying where the overlap is. If Phase 2 interventions have already been run correctly and the stall persists, that is specifically what the audit is designed for." },
-  r_bn03_dose: { tag: "Bottleneck 03 — Energy (Dose Variable)", title: "Energy dropped after a dose increase — this is a GLP-1 variable, not a compound gap.", body: "When energy drops shortly after a dose escalation, research suggests the dose itself is creating a deficit too aggressive for the body to sustain output. The result looks like an energy bottleneck but is actually a dose or timing issue.", whatItMeans: "Evaluating whether a dose reduction or timing adjustment resolves the energy drop is the rational first move. Adding energy compounds on top of a dose problem does not fix the root cause." },
-  r_bn03: { tag: "Bottleneck 03 — Energy (Gradual Decline)", title: "Gradual energy decline points to a systemic output issue, not a single dose event.", body: "Energy that declines gradually over weeks during a sustained deficit signals that the body's output capacity is being compressed by the caloric environment. Research suggests this pattern has three distinct presentations that each map to a different compound response.", whatItMeans: "The RPB covers all three energy bottleneck presentations and the compound logic for each. Getting the presentation right matters more than the compound choice itself." },
-  r_bn03_baseline: { tag: "Foundation Gate — Baseline Energy", title: "Low energy from the start is almost always a foundation variable, not a compound gap.", body: "When energy has been low since protocol initiation, research consistently points to foundational inputs rather than a compound bottleneck. Adding an energy compound in this situation amplifies the problem — it does not correct it.", whatItMeans: "Running the full Foundation Gate check in order — sleep, stimulant load, chronic stress, training stimulus — is the first diagnostic step before any compound consideration." },
-  r_bn04: { tag: "Bottleneck 04 — Sleep and Recovery", title: "Sleep disruption during a protocol is often a timing issue before it is a bottleneck.", body: "Sleep disruption that begins or worsens after starting or escalating a compound is worth investigating as a timing or dose variable first. GLP-1 injection timing relative to sleep can affect quality directly.", whatItMeans: "If timing adjustments have been evaluated and sleep disruption persists, the RPB covers the full sleep and recovery bottleneck protocol including which compounds the research supports and the sequence for each presentation." },
-  r_bn05: { tag: "Bottleneck 05 — GI Issues", title: "GI symptoms have three distinct presentations — which one applies changes the entire approach.", body: "Nausea driven by dose timing, gut motility issues from sustained suppression, and mucosal inflammation from extended restriction all present differently and respond to different interventions. Treating all GI symptoms the same way is one of the more consistent reasons they persist.", whatItMeans: "The RPB covers all three GI presentations, the GLP-1 audit check for each, and the compounds the research supports for each specific pattern." },
-  r_bn06: { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood and depleted drive are almost always downstream signals, not the root cause.", body: "Mood and motivation loss during a protocol is rarely a willpower issue. Research suggests it is almost always a downstream signal of elevated cortisol, hormonal suppression from extended restriction, or energy depletion. The compound response depends on which is the upstream driver.", whatItMeans: "For male researchers, hormonal suppression evaluation at week 12 or beyond is worth running before adding mood support compounds. The RPB covers the diagnostic sequence for identifying the correct upstream cause." },
-  r_bn07: { tag: "Bottleneck 07 — Dose Escalation", title: "Results stopped when the dose kept going up — the problem is almost never the dose.", body: "Escalating dose in response to a plateau is one of the most common patterns in extended protocols. Research consistently shows it is almost never the correct response. When dose escalation produces diminishing returns, the data suggests the limiting variable is not compound level.", whatItMeans: "The RPB covers the five checks to run before any further dose change and why the plateau almost always resolves when the actual limiting variable is correctly identified." },
-  r_bn07_stall: { tag: "Bottleneck 07 — Dose Escalation Pattern", title: "A stall that triggered a dose increase is the most common misread in protocol research.", body: "When a plateau leads to dose escalation and the plateau continues, the research is clear: the dose was not the limiting variable. Most plateaus at this stage are Phase 2 metabolic shifts — escalating the intake-suppression mechanism does not address an output bottleneck.", whatItMeans: "Running the five pre-escalation checks from Bottleneck 07 alongside the Phase 2 assessment is the correct sequence. The RPB walks through both in order." },
-  r_phase3: { tag: "Phase 3 — Recovery Bottleneck", title: "The system is under recovery strain — output capacity is the limiting variable, not intake.", body: "When training performance declines alongside a stall, research suggests the protocol has entered Phase 3. The caloric deficit that drove fat loss in Phase 2 has become the ceiling on recovery capacity. Adding more metabolic demand at this stage typically makes both problems worse.", whatItMeans: "Phase 3 requires a different compound logic than Phase 2. The RPB covers both phases and the specific compounds the research supports at each stage." },
-  r_phase4: { tag: "Phase 4 — Recovery Ceiling", title: "Significant sleep degradation alongside a stall suggests the recovery ceiling has collapsed.", body: "When sleep has significantly degraded, progress has stalled across multiple metrics, and recovery is consistently poor, research suggests this is a Phase 4 pattern. Recovery capacity is the primary limiting variable — and adding more is most likely to make things worse.", whatItMeans: "The RPB covers the Phase 4 framework and what the research supports for rebuilding recovery capacity before any further protocol additions." },
-  r_gh_insulin: { tag: "GH Signaling — Insulin Window", title: "The pulse is being blunted by elevated insulin at injection time.", body: "GH secretagogues require a genuinely fasted state to produce a measurable pulse. When insulin is elevated, GH amplitude drops significantly. On an active GLP-1 protocol, gastric emptying slows — extending the fasted window to 4 to 5 hours post-meal is often the only correction needed.", whatItMeans: "This is an environment variable, not a compound selection problem. The RPB covers the fasted window logic for GH secretagogues including how GLP-1 interaction changes the required window." },
-  r_gh_bedtime: { tag: "GH Secretagogue — Timing Error", title: "Bedtime injection is the most common timing mistake for Tesamorelin.", body: "Tesamorelin has a 2 to 3 hour active window — injected at bedtime, the compound signal is already fading by the time the natural GH peak arrives during deep sleep. Daytime injection creates an additive pulse, which is what drives measurable IGF-1 changes. CJC-1295 without DAC is the one exception where bedtime injection is rational.", whatItMeans: "Shifting to a daytime fasted injection is often the only change needed to restore the response. The RPB covers timing logic for every GH secretagogue." },
-  r_gh_mixed: { tag: "GH Secretagogue — Consistency", title: "Inconsistent timing is producing inconsistent results — not an inconsistent compound.", body: "GH secretagogues depend on consistent environmental conditions to produce a readable result. Varying the injection window changes the insulin environment, the cortisol context, and the somatostatin brake at injection time.", whatItMeans: "Establishing a fixed daily injection window — fasted, consistent timing — and running it for 4 to 6 weeks before evaluating is the correct diagnostic approach." },
-  r_gh_environment: { tag: "GH Signaling — Environment", title: "The signaling environment is suppressing the pulse before the compound can work.", body: "GH secretagogue output mirrors the quality of the environment it enters. Sleep deprivation reduces pulse frequency. Chronic stress elevates cortisol and competes with GH signaling. Research suggests most researchers who describe CJC and Ipamorelin as inconsistent were injecting into a suppressed environment.", whatItMeans: "The Foundation Gate applies here as directly as it does to GLP-1 protocols. The RPB covers the environmental inputs that govern GH pulse quality and what to stabilize before concluding the stack is not working." },
-  r_repair_none: { tag: "Tissue Repair — No Response", title: "No repair response at 4 or more weeks warrants a protocol audit before changing compounds.", body: "No response after an adequate run typically points to one of three variables: reconstitution error, insufficient dose consistency, or an environmental factor suppressing the repair signal. Adding a second repair compound before diagnosing the first reliably produces an unreadable result.", whatItMeans: "The RPB Reconstitution Reference is worth auditing first — reconstitution errors are one of the most common and most overlooked sources of null results in peptide research." },
-  r_repair_slow: { tag: "Tissue Repair — Slower Than Expected", title: "Repair response is present but slower than expected — the foundation is the variable.", body: "BPC-157 and TB-500 amplify the body's existing repair signaling. Poor sleep and high training load reduce the signal they have to work with. The fastest repair responses come from researchers who have stabilized sleep and moderated training load relative to recovery capacity.", whatItMeans: "The RPB covers the full tissue repair bottleneck framework and how to evaluate whether the compound combination is correctly matched to the repair presentation." },
-  r_longevity_general: { tag: "Longevity Stack", title: "General longevity support — the Foundation Gate applies here as much as anywhere.", body: "Compounds like SS-31, MOTS-c, Epithalon, and NAD+ work by amplifying existing biological systems. Research suggests they produce their most meaningful results when foundational inputs are reasonably stable. Adding longevity compounds on top of poor sleep and high cortisol amplifies the stress environment, not the longevity signal.", whatItMeans: "The RPB covers the immune and longevity compound category including when each compound becomes the rational choice versus when foundational inputs need addressing first." },
-  r_immune: { tag: "Immune and Recovery", title: "Immune resilience and inflammation — the correct compound depends on which pattern applies.", body: "Thymosin Alpha-1, Glutathione, and KPV each address different aspects of immune function and inflammation. The correct compound depends on whether the issue is immune suppression, systemic inflammation, gut-specific inflammation, or oxidative stress from a prolonged protocol.", whatItMeans: "The RPB covers the immune and longevity category with mechanism breakdowns, when each compound becomes relevant, and how they interact with an active GLP-1 or GH protocol." },
-  r_semax: { tag: "Cognitive — Semax", title: "Baseline mental flatness points to BDNF signaling as the likely target.", body: "Semax is researched primarily for its effect on BDNF — the brain protein that drives motivation, cognitive performance, and mood regulation. Research suggests it is most relevant when mental flatness and reduced focus are present as baseline issues rather than downstream effects of cortisol or caloric restriction.", whatItMeans: "The RPB covers Semax, Selank, and DSIP in the cognitive and mood section — including when each one is the rational choice and how they interact with an active fat loss protocol." },
-  r_selank: { tag: "Cognitive — Selank", title: "Elevated stress response points to cortisol as the primary variable.", body: "Selank is researched for its ability to reduce stress-driven cortisol and anxiety without sedation or dependency. Research suggests it is the more relevant cognitive compound when the primary symptom is an elevated stress response rather than cognitive flatness.", whatItMeans: "The RPB covers the full cognitive and mood framework including when Selank versus Semax versus DSIP is the defensible choice based on the symptom presentation." },
-  r_cog_compound: { tag: "Cognitive — Compound Variable", title: "Cognitive change that followed a new compound is a compound variable, not a baseline issue.", body: "Mental flatness or mood shift that appears after a new compound is introduced or a dose is changed is more likely a compound interaction than a cognitive bottleneck requiring a separate addition. Adding a cognitive compound on top of an unidentified interaction rarely resolves it.", whatItMeans: "The RPB covers compound interaction logic and how to systematically isolate which variable is driving a cognitive or mood change when the timing points to a recent protocol change." },
+  r_bn01: { tag: "Bottleneck 01 — Losing Muscle", title: "The limiting variable is lean mass — the body is breaking down muscle alongside fat.", body: "When running a significant caloric deficit, the body breaks down muscle tissue for energy — especially when protein intake is low or training stimulus is not strong enough to send a preservation signal. This is not a failure of the compound. It is the body doing exactly what sustained caloric restriction tells it to do when there is no counteracting anabolic signal.", whatItMeans: "The research points to a GH secretagogue stack as the correct support layer here — specifically compounds that send a lean mass preservation signal without adding metabolic demand the system cannot handle." },
+  r_bn02_early: { tag: "Bottleneck 02 — Fat Loss Stalled", title: "The stall is recent — a GLP-1 audit should run before any protocol change.", body: "A stall under 3 weeks is within normal variation for most protocols. Research suggests running three checks before interpreting it as a bottleneck: precise caloric tracking for 7 days, dose and timing review, and compound-specific stall pattern assessment.", whatItMeans: "The Retatrutide guide walks through all three checks and the compound-specific stall patterns in the context of an active GLP-1 protocol." },
+  r_bn02: { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Phase 2 fat loss bottleneck — the limiting variable has shifted from intake to output.", body: "After the initial intake suppression phase, fat loss transitions from appetite-driven to output-driven. The compound has done its primary job. The question becomes whether the body's fat mobilization capacity is keeping pace with the caloric environment.", whatItMeans: "This is the most common plateau pattern on GLP-1 protocols. The Retatrutide guide covers the Phase 2 transition in detail — what drives it, what the research supports at this stage, and how to sequence the response correctly." },
+  r_bn02_extended: { tag: "Bottleneck 02 — Extended Stall", title: "An extended stall may involve overlapping bottlenecks.", body: "A plateau lasting more than 6 weeks that has not responded to standard Phase 2 interventions often involves more than one active bottleneck — or a phase read that looked accurate but had a second variable running underneath it.", whatItMeans: "The Research Protocol Bible covers the full diagnostic framework for identifying overlapping bottlenecks — what each combination typically signals and how to sequence the response when standard Phase 2 interventions have not moved the plateau." },
+  r_bn03_dose: { tag: "Bottleneck 03 — Energy (Dose Variable)", title: "Energy dropped after a dose increase — this is a GLP-1 variable, not a compound gap.", body: "When energy drops shortly after a dose escalation, research suggests the dose itself is creating a deficit too aggressive for the body to sustain output. The result looks like an energy bottleneck but is actually a dose or timing issue.", whatItMeans: "The Retatrutide guide covers the dose-driven energy drop pattern and how to distinguish it from a genuine energy bottleneck — including what the data supports as the correct first move before adding anything." },
+  r_bn03: { tag: "Bottleneck 03 — Energy (Gradual Decline)", title: "Gradual energy decline points to a systemic output issue, not a single dose event.", body: "Energy that declines gradually over weeks during a sustained deficit signals that the body's output capacity is being compressed by the caloric environment. Research suggests this pattern has three distinct presentations that each map to a different compound response.", whatItMeans: "The Research Protocol Bible covers all three energy bottleneck presentations and the compound logic for each. Getting the presentation right matters more than the compound choice itself — the RPB gives you the framework to identify which one you are in." },
+  r_bn03_baseline: { tag: "Foundation Gate — Baseline Energy", title: "Low energy from the start is almost always a foundation variable, not a compound gap.", body: "When energy has been low since protocol initiation, research consistently points to foundational inputs rather than a compound bottleneck. Adding an energy compound in this situation amplifies the problem — it does not correct it.", whatItMeans: "The Research Protocol Bible covers the Foundation Gate in full — all four inputs in the correct order — and explains why adding a compound before ruling out foundational causes typically makes the picture worse before it gets better." },
+  r_bn04: { tag: "Bottleneck 04 — Sleep and Recovery", title: "Sleep disruption during a protocol is often a timing issue before it is a bottleneck.", body: "Sleep disruption that begins or worsens after starting or escalating a compound is worth investigating as a timing or dose variable first. GLP-1 injection timing relative to sleep can affect quality directly.", whatItMeans: "The Research Protocol Bible covers the sleep and recovery bottleneck protocol — the timing and dose variables to check first, and the specific compounds the research supports for each presentation of sleep disruption during an active protocol." },
+  r_bn05: { tag: "Bottleneck 05 — GI Issues", title: "GI symptoms have three distinct presentations — which one applies changes the entire approach.", body: "Nausea driven by dose timing, gut motility issues from sustained suppression, and mucosal inflammation from extended restriction all present differently and respond to different interventions. Treating all GI symptoms the same way is one of the more consistent reasons they persist.", whatItMeans: "The Retatrutide guide covers GI symptoms in the context of an active GLP-1 protocol and how to distinguish between the three presentations — including the audit check to run before reaching for any intervention." },
+  r_bn06: { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood and depleted drive are almost always downstream signals, not the root cause.", body: "Mood and motivation loss during a protocol is rarely a willpower issue. Research suggests it is almost always a downstream signal of elevated cortisol, hormonal suppression from extended restriction, or energy depletion. The compound response depends on which is the upstream driver.", whatItMeans: "The Research Protocol Bible covers the mood and motivation bottleneck and the diagnostic sequence for identifying whether the upstream driver is cortisol elevation, hormonal suppression, or energy depletion — each one maps to a different compound response." },
+  r_bn07: { tag: "Bottleneck 07 — Dose Escalation", title: "Results stopped when the dose kept going up — the problem is almost never the dose.", body: "Escalating dose in response to a plateau is one of the most common patterns in extended protocols. Research consistently shows it is almost never the correct response. When dose escalation produces diminishing returns, the data suggests the limiting variable is not compound level.", whatItMeans: "The Research Protocol Bible covers the five checks to run before any further dose change and why the plateau almost always resolves when the actual limiting variable is correctly identified — not when the dose goes up again." },
+  r_bn07_stall: { tag: "Bottleneck 07 — Dose Escalation Pattern", title: "A stall that triggered a dose increase is the most common misread in protocol research.", body: "When a plateau leads to dose escalation and the plateau continues, the research is clear: the dose was not the limiting variable. Most plateaus at this stage are Phase 2 metabolic shifts — escalating the intake-suppression mechanism does not address an output bottleneck.", whatItMeans: "The Research Protocol Bible covers the pre-escalation checklist and the Phase 2 assessment that almost always identifies the actual limiting variable. Running both in sequence is the correct diagnostic approach — the RPB walks through both in order." },
+  r_phase3: { tag: "Phase 3 — Recovery Bottleneck", title: "The system is under recovery strain — output capacity is the limiting variable, not intake.", body: "When training performance declines alongside a stall, research suggests the protocol has entered Phase 3. The caloric deficit that drove fat loss in Phase 2 has become the ceiling on recovery capacity. Adding more metabolic demand at this stage typically makes both problems worse.", whatItMeans: "Phase 3 requires a different compound logic than Phase 2. The Retatrutide, Tesamorelin, and Ipamorelin guide covers Phase 3 recovery strain and the specific GH secretagogue stack decisions the research supports for rebuilding output capacity without adding demand the system cannot handle." },
+  r_phase4: { tag: "Phase 4 — Recovery Ceiling", title: "Significant sleep degradation alongside a stall suggests the recovery ceiling has collapsed.", body: "When sleep has significantly degraded, progress has stalled across multiple metrics, and recovery is consistently poor, research suggests this is a Phase 4 pattern. Recovery capacity is the primary limiting variable — and adding more is most likely to make things worse.", whatItMeans: "The Research Protocol Bible covers the Phase 4 framework in full — what the research supports for rebuilding recovery capacity, what to avoid adding, and the correct sequence before any further protocol changes." },
+  r_gh_insulin: { tag: "GH Signaling — Insulin Window", title: "The pulse is being blunted by elevated insulin at injection time.", body: "GH secretagogues require a genuinely fasted state to produce a measurable pulse. When insulin is elevated, GH amplitude drops significantly. On an active GLP-1 protocol, gastric emptying slows — extending the fasted window to 4 to 5 hours post-meal is often the only correction needed.", whatItMeans: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the fasted window requirement in detail — including how an active GLP-1 protocol changes that window by slowing gastric emptying, and the specific timing logic for each compound in the stack." },
+  r_gh_bedtime: { tag: "GH Secretagogue — Timing Error", title: "Bedtime injection is the most common timing mistake for Tesamorelin.", body: "Tesamorelin has a 2 to 3 hour active window — injected at bedtime, the compound signal is already fading by the time the natural GH peak arrives during deep sleep. Daytime injection creates an additive pulse, which is what drives measurable IGF-1 changes. CJC-1295 without DAC is the one exception where bedtime injection is rational.", whatItMeans: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers injection timing for every compound in the stack — the active window for each, when daytime versus bedtime injection is rational, and why this single variable is the most common reason GH stacks underperform." },
+  r_gh_mixed: { tag: "GH Secretagogue — Consistency", title: "Inconsistent timing is producing inconsistent results — not an inconsistent compound.", body: "GH secretagogues depend on consistent environmental conditions to produce a readable result. Varying the injection window changes the insulin environment, the cortisol context, and the somatostatin brake at injection time.", whatItMeans: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the consistency requirements for GH secretagogue protocols and how to establish a fixed injection window that produces a readable result — including what to expect once consistency is established." },
+  r_gh_environment: { tag: "GH Signaling — Environment", title: "The signaling environment is suppressing the pulse before the compound can work.", body: "GH secretagogue output mirrors the quality of the environment it enters. Sleep deprivation reduces pulse frequency. Chronic stress elevates cortisol and competes with GH signaling. Research suggests most researchers who describe CJC and Ipamorelin as inconsistent were injecting into a suppressed environment.", whatItMeans: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the environmental inputs that govern GH pulse quality — sleep depth, cortisol context, insulin environment, and the somatostatin brake — and the audit to run before concluding the stack is not working." },
+  r_repair_none: { tag: "Tissue Repair — No Response", title: "No repair response at 4 or more weeks warrants a protocol audit before changing compounds.", body: "No response after an adequate run typically points to one of three variables: reconstitution error, insufficient dose consistency, or an environmental factor suppressing the repair signal. Adding a second repair compound before diagnosing the first reliably produces an unreadable result.", whatItMeans: "The Research Protocol Bible covers the tissue repair bottleneck including the three most common causes of a null result and the reconstitution audit to run first — reconstitution errors are the most common and most overlooked source of null results in peptide research." },
+  r_repair_slow: { tag: "Tissue Repair — Slower Than Expected", title: "Repair response is present but slower than expected — the foundation is the variable.", body: "BPC-157 and TB-500 amplify the body's existing repair signaling. Poor sleep and high training load reduce the signal they have to work with. The fastest repair responses come from researchers who have stabilized sleep and moderated training load relative to recovery capacity.", whatItMeans: "The Research Protocol Bible covers the full tissue repair framework — how to evaluate whether the compound combination is correctly matched to the repair presentation, and what the signaling environment needs to look like for that amplification to produce a measurable result." },
+  r_longevity_general: { tag: "Longevity Stack", title: "General longevity support — the Foundation Gate applies here as much as anywhere.", body: "Compounds like SS-31, MOTS-c, Epithalon, and NAD+ work by amplifying existing biological systems. Research suggests they produce their most meaningful results when foundational inputs are reasonably stable. Adding longevity compounds on top of poor sleep and high cortisol amplifies the stress environment, not the longevity signal.", whatItMeans: "The MOTS-C and SS-31 guide covers the general longevity stack decision directly — when each compound becomes the rational choice, how they interact with each other, and why the foundational environment needs to be reasonably stable before they produce their most meaningful results." },
+  r_immune: { tag: "Immune and Recovery", title: "Immune resilience and inflammation — the correct compound depends on which pattern applies.", body: "Thymosin Alpha-1, Glutathione, and KPV each address different aspects of immune function and inflammation. The correct compound depends on whether the issue is immune suppression, systemic inflammation, gut-specific inflammation, or oxidative stress from a prolonged protocol.", whatItMeans: "The MOTS-C and SS-31 guide covers immune resilience and cellular support compounds — how to distinguish between the patterns each one addresses, and the framework for identifying which pattern applies." },
+  r_semax: { tag: "Cognitive — Semax", title: "Baseline mental flatness points to BDNF signaling as the likely target.", body: "Semax is researched primarily for its effect on BDNF — the brain protein that drives motivation, cognitive performance, and mood regulation. Research suggests it is most relevant when mental flatness and reduced focus are present as baseline issues rather than downstream effects of cortisol or caloric restriction.", whatItMeans: "The Research Protocol Bible covers Semax, Selank, and DSIP in the cognitive and mood section — when each one is the rational choice, how to confirm which pattern applies, and how they interact with an active fat loss protocol." },
+  r_selank: { tag: "Cognitive — Selank", title: "Elevated stress response points to cortisol as the primary variable.", body: "Selank is researched for its ability to reduce stress-driven cortisol and anxiety without sedation or dependency. Research suggests it is the more relevant cognitive compound when the primary symptom is an elevated stress response rather than cognitive flatness.", whatItMeans: "The Research Protocol Bible covers the full cognitive and mood framework — when Selank is the correct choice over Semax, the mechanism behind it, and how to confirm cortisol is the upstream driver before making the compound decision." },
+  r_cog_compound: { tag: "Cognitive — Compound Variable", title: "Cognitive change that followed a new compound is a compound variable, not a baseline issue.", body: "Mental flatness or mood shift that appears after a new compound is introduced or a dose is changed is more likely a compound interaction than a cognitive bottleneck requiring a separate addition. Adding a cognitive compound on top of an unidentified interaction rarely resolves it.", whatItMeans: "The Research Protocol Bible covers compound interaction logic and the isolation framework for identifying which variable is driving a cognitive or mood change when the timing points to a recent protocol change." },
 };
 
 const MULTI_RESULTS = {
@@ -506,243 +480,167 @@ const MULTI_RESULTS = {
     tag: "Two Active Bottlenecks",
     title: "Fat loss stalled and energy declining — these two are almost always connected.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 02 — Fat Loss Stalled",
-        title: "The limiting variable has shifted from intake to output.",
-        body: "After the initial intake suppression phase, fat loss transitions from appetite-driven to output-driven. The compound has done its primary job. The question is whether the body's fat mobilization capacity is keeping pace with the caloric environment."
-      },
-      {
-        tag: "Bottleneck 03 — Energy Decline",
-        title: "Energy compression is reducing output capacity at the same time.",
-        body: "When energy declines alongside a fat loss plateau, research suggests the caloric deficit has become too aggressive for the body to sustain output. The intake-side mechanism is working. The output side is being compressed by it."
-      }
+      { tag: "Bottleneck 02 — Fat Loss Stalled", title: "The limiting variable has shifted from intake to output.", body: "After the initial intake suppression phase, fat loss transitions from appetite-driven to output-driven. The compound has done its primary job. The question is whether the body's fat mobilization capacity is keeping pace with the caloric environment." },
+      { tag: "Bottleneck 03 — Energy Decline", title: "Energy compression is reducing output capacity at the same time.", body: "When energy declines alongside a fat loss plateau, research suggests the caloric deficit has become too aggressive for the body to sustain output. The intake-side mechanism is working. The output side is being compressed by it." }
     ],
-    interaction: "These two bottlenecks are almost always the same problem expressed in two ways. The deficit that created fat loss in Phase 1 has become the ceiling on energy output in Phase 2. Addressing one without the other produces a partial result. The RPB covers the Phase 2 compound logic for fat mobilization alongside the energy pattern identification — the sequence matters significantly."
+    interaction: "These two bottlenecks are almost always the same problem expressed in two ways. The deficit that created fat loss in Phase 1 has become the ceiling on energy output in Phase 2. Addressing one without the other produces a partial result. The Research Protocol Bible covers the Phase 2 compound logic for fat mobilization alongside the energy pattern identification — the sequence matters significantly.",
+    guide: "rpb"
   },
   "fatlose,muscle": {
     tag: "Two Active Bottlenecks",
     title: "Stalled fat loss while losing muscle — the deficit is working against itself.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 02 — Fat Loss Stalled",
-        title: "Fat mobilization capacity is not keeping pace with the deficit.",
-        body: "The intake suppression mechanism has reached its ceiling. The limiting variable has shifted to output — specifically whether the body can mobilize stored fat efficiently at this phase of the protocol."
-      },
-      {
-        tag: "Bottleneck 01 — Losing Muscle",
-        title: "The caloric deficit is pulling from lean mass as well as fat.",
-        body: "Without a counteracting anabolic signal, sustained caloric restriction breaks down muscle alongside fat. This is not a compound failure — it is the body doing exactly what restricted intake tells it to do when there is no preservation signal."
-      }
+      { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Fat mobilization capacity is not keeping pace with the deficit.", body: "The intake suppression mechanism has reached its ceiling. The limiting variable has shifted to output — specifically whether the body can mobilize stored fat efficiently at this phase of the protocol." },
+      { tag: "Bottleneck 01 — Losing Muscle", title: "The caloric deficit is pulling from lean mass as well as fat.", body: "Without a counteracting anabolic signal, sustained caloric restriction breaks down muscle alongside fat. This is not a compound failure — it is the body doing exactly what restricted intake tells it to do when there is no preservation signal." }
     ],
-    interaction: "This combination is one of the clearest signals that the protocol needs a support layer, not a dose escalation. The fat loss mechanism is working but the body is using muscle as a secondary fuel source. Adding lean mass support before addressing the fat mobilization bottleneck is the correct sequence — otherwise the fat mobilization compound runs on a system that is still losing muscle."
+    interaction: "This combination is one of the clearest signals that the protocol needs a GH secretagogue support layer. The fat loss mechanism is working but the body is using muscle as a secondary fuel source. The Retatrutide, Tesamorelin, and Ipamorelin guide covers the lean mass support stack decisions that address this specific pattern — including the correct sequencing before adding a fat mobilization compound on top.",
+    guide: "stack"
   },
   "energy,muscle": {
     tag: "Two Active Bottlenecks",
     title: "Low energy and muscle loss together — the deficit is running too deep.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 03 — Energy Decline",
-        title: "Output capacity is being compressed by the caloric environment.",
-        body: "Gradual energy decline during a sustained deficit signals that the body's output capacity is being compressed. Research suggests this has three distinct presentations — identifying which one applies changes the compound response significantly."
-      },
-      {
-        tag: "Bottleneck 01 — Losing Muscle",
-        title: "Lean mass is being broken down alongside fat.",
-        body: "Without an adequate anabolic signal and sufficient protein, the body breaks down muscle for energy alongside fat. This is compounding the energy problem — less lean mass means a lower metabolic floor."
-      }
+      { tag: "Bottleneck 03 — Energy Decline", title: "Output capacity is being compressed by the caloric environment.", body: "Gradual energy decline during a sustained deficit signals that the body's output capacity is being compressed. Research suggests this has three distinct presentations — identifying which one applies changes the compound response significantly." },
+      { tag: "Bottleneck 01 — Losing Muscle", title: "Lean mass is being broken down alongside fat.", body: "Without an adequate anabolic signal and sufficient protein, the body breaks down muscle for energy alongside fat. This is compounding the energy problem — less lean mass means a lower metabolic floor." }
     ],
-    interaction: "Low energy and muscle loss in combination almost always signals the deficit is running too aggressively for the recovery system to maintain lean mass. Adding compounds without addressing the underlying deficit-to-recovery ratio tends to accelerate both problems. The RPB covers the correct sequence — lean mass support first, then energy pattern identification."
+    interaction: "Low energy and muscle loss in combination almost always signals the deficit is running too aggressively for the recovery system to maintain lean mass. The Research Protocol Bible covers the correct sequence — lean mass support first, then energy pattern identification — and why reversing that order tends to accelerate both problems.",
+    guide: "rpb"
   },
   "energy,mood": {
     tag: "Two Active Bottlenecks",
     title: "Low energy and flat mood together — cortisol is likely the upstream driver of both.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 03 — Energy Decline",
-        title: "Energy output is being compressed by the protocol environment.",
-        body: "Gradual energy decline during a sustained deficit often involves cortisol elevation as one of the primary mechanisms. The body under prolonged restriction increases cortisol to mobilize energy — and that cortisol elevation becomes its own ceiling."
-      },
-      {
-        tag: "Bottleneck 06 — Mood and Motivation",
-        title: "Flat mood and depleted drive are almost always downstream cortisol signals.",
-        body: "Mood and motivation loss during a protocol is almost always a downstream signal of elevated cortisol, hormonal suppression, or energy depletion — not a primary cognitive problem."
-      }
+      { tag: "Bottleneck 03 — Energy Decline", title: "Energy output is being compressed by the protocol environment.", body: "Gradual energy decline during a sustained deficit often involves cortisol elevation as one of the primary mechanisms. The body under prolonged restriction increases cortisol to mobilize energy — and that cortisol elevation becomes its own ceiling." },
+      { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood and depleted drive are almost always downstream cortisol signals.", body: "Mood and motivation loss during a protocol is almost always a downstream signal of elevated cortisol, hormonal suppression, or energy depletion — not a primary cognitive problem." }
     ],
-    interaction: "When energy and mood decline together during an extended protocol, the research consistently points to cortisol elevation as the upstream variable driving both. Treating them as separate bottlenecks and adding separate compounds typically produces an unreadable result. The RPB covers the cortisol-driven pattern specifically and how to identify whether this is a cortisol ceiling, hormonal suppression, or pure energy depletion pattern."
+    interaction: "When energy and mood decline together during an extended protocol, the research consistently points to cortisol elevation as the upstream variable driving both. The Research Protocol Bible covers the cortisol-driven pattern specifically — how to identify whether this is a cortisol ceiling, hormonal suppression, or pure energy depletion, and the compound logic that applies to each.",
+    guide: "rpb"
   },
   "fatlose,mood": {
     tag: "Two Active Bottlenecks",
     title: "Stalled fat loss and flat mood — two signals the system is running at its ceiling.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 02 — Fat Loss Stalled",
-        title: "The limiting variable has shifted from intake to output.",
-        body: "Fat loss has transitioned past the appetite suppression phase. The question is whether fat mobilization capacity is keeping pace — and whether cortisol elevation from the extended deficit is part of what is limiting it."
-      },
-      {
-        tag: "Bottleneck 06 — Mood and Motivation",
-        title: "Flat mood is a downstream signal of an upstream variable.",
-        body: "Mood flatness during an extended protocol is almost always a cortisol or hormonal suppression signal. It tends to appear when the protocol has been running long enough for cumulative restriction stress to become significant."
-      }
+      { tag: "Bottleneck 02 — Fat Loss Stalled", title: "The limiting variable has shifted from intake to output.", body: "Fat loss has transitioned past the appetite suppression phase. The question is whether fat mobilization capacity is keeping pace — and whether cortisol elevation from the extended deficit is part of what is limiting it." },
+      { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood is a downstream signal of an upstream variable.", body: "Mood flatness during an extended protocol is almost always a cortisol or hormonal suppression signal. It tends to appear when the protocol has been running long enough for cumulative restriction stress to become significant." }
     ],
-    interaction: "A fat loss plateau and mood flatness appearing together is a common presentation at weeks 10 to 16 of an extended protocol. Research suggests both are often downstream effects of a cortisol ceiling that has been quietly building. Addressing the fat loss bottleneck without identifying the cortisol component tends to produce a protocol that looks correct on paper but does not respond."
+    interaction: "A fat loss plateau and mood flatness appearing together is a common presentation at weeks 10 to 16 of an extended protocol. Research suggests both are often downstream effects of a cortisol ceiling that has been quietly building. The Research Protocol Bible covers how to identify the cortisol component and why addressing the fat loss bottleneck without it tends to produce a protocol that looks correct on paper but does not respond.",
+    guide: "rpb"
   },
   "fatlose,sleep": {
     tag: "Two Active Bottlenecks",
     title: "Stalled fat loss and disrupted sleep — sleep may be the upstream variable for both.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 02 — Fat Loss Stalled",
-        title: "Fat mobilization has reached a ceiling.",
-        body: "The intake suppression mechanism has done its work. The question is whether the output side is keeping pace — and whether poor sleep quality is suppressing the metabolic output that fat mobilization depends on."
-      },
-      {
-        tag: "Bottleneck 04 — Sleep and Recovery",
-        title: "Sleep disruption during a protocol is often a GLP-1 timing issue first.",
-        body: "Sleep disruption that begins or worsens after starting or escalating a compound is worth investigating as a timing or dose variable before assuming it is a standalone bottleneck."
-      }
+      { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Fat mobilization has reached a ceiling.", body: "The intake suppression mechanism has done its work. The question is whether the output side is keeping pace — and whether poor sleep quality is suppressing the metabolic output that fat mobilization depends on." },
+      { tag: "Bottleneck 04 — Sleep and Recovery", title: "Sleep disruption during a protocol is often a GLP-1 timing issue first.", body: "Sleep disruption that begins or worsens after starting or escalating a compound is worth investigating as a timing or dose variable before assuming it is a standalone bottleneck." }
     ],
-    interaction: "Poor sleep suppresses growth hormone pulsatility, elevates cortisol, and reduces the metabolic output that fat loss at Phase 2 depends on. When these two appear together, fixing sleep is almost always the correct first move — not adding a fat mobilization compound on top of a system that cannot use it."
+    interaction: "Poor sleep suppresses growth hormone pulsatility, elevates cortisol, and reduces the metabolic output that fat loss at Phase 2 depends on. When these two appear together, fixing sleep is almost always the correct first move. The Research Protocol Bible covers the sleep and recovery bottleneck protocol and the GLP-1 timing variables that most commonly drive disruption.",
+    guide: "rpb"
   },
   "energy,fatlose,muscle": {
     tag: "Three Active Bottlenecks",
     title: "Stalled fat loss, muscle loss, and low energy — the protocol is running beyond its recovery ceiling.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 02 — Fat Loss Stalled",
-        title: "Fat mobilization capacity is not keeping pace with the deficit.",
-        body: "The intake-side mechanism has reached its ceiling. The body needs a fat mobilization signal — but adding one without addressing the other two active bottlenecks runs it on a system that cannot process the output."
-      },
-      {
-        tag: "Bottleneck 01 — Losing Muscle",
-        title: "Lean mass is being broken down as a secondary fuel source.",
-        body: "Without an adequate anabolic signal, the body breaks down muscle alongside fat during sustained restriction. This is lowering the metabolic floor and compounding the energy problem."
-      },
-      {
-        tag: "Bottleneck 03 — Energy Decline",
-        title: "Output capacity is being compressed at the same time.",
-        body: "Energy declining across all three of these patterns simultaneously signals the deficit has become more aggressive than the recovery system can manage."
-      }
+      { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Fat mobilization capacity is not keeping pace with the deficit.", body: "The intake-side mechanism has reached its ceiling. The body needs a fat mobilization signal — but adding one without addressing the other two active bottlenecks runs it on a system that cannot process the output." },
+      { tag: "Bottleneck 01 — Losing Muscle", title: "Lean mass is being broken down as a secondary fuel source.", body: "Without an adequate anabolic signal, the body breaks down muscle alongside fat during sustained restriction. This is lowering the metabolic floor and compounding the energy problem." },
+      { tag: "Bottleneck 03 — Energy Decline", title: "Output capacity is being compressed at the same time.", body: "Energy declining across all three of these patterns simultaneously signals the deficit has become more aggressive than the recovery system can manage." }
     ],
-    interaction: "This three-bottleneck combination is one of the clearest indicators that the protocol has moved past what a general framework can diagnose from the outside. The interactions are compounding: muscle loss lowers the metabolic floor, which deepens energy suppression, which reduces the body's ability to mobilize fat efficiently. Adding compounds in the wrong order in this situation tends to make the picture worse before it gets better. This is the specific pattern the audit is designed to resolve."
+    interaction: "This three-bottleneck combination signals the protocol has moved past what a general framework can diagnose from the outside. The interactions are compounding: muscle loss lowers the metabolic floor, which deepens energy suppression, which reduces the body's ability to mobilize fat efficiently. The Research Protocol Bible covers all three bottlenecks and the sequencing logic that prevents adding compounds in an order that makes things worse before they get better.",
+    guide: "rpb"
   },
   "energy,fatlose,mood": {
     tag: "Three Active Bottlenecks",
     title: "Stalled fat loss, low energy, and flat mood — a cortisol ceiling is likely driving all three.",
     bottlenecks: [
-      {
-        tag: "Bottleneck 02 — Fat Loss Stalled",
-        title: "Output capacity is the limiting variable.",
-        body: "Fat loss has transitioned to output-driven. The question is whether cortisol elevation from extended restriction is part of what is suppressing fat mobilization."
-      },
-      {
-        tag: "Bottleneck 03 — Energy Decline",
-        title: "Energy output is being compressed by the caloric environment.",
-        body: "Gradual energy decline during a sustained deficit often involves cortisol as one of the primary mechanisms. The body under prolonged restriction increases cortisol — and that elevation becomes a ceiling."
-      },
-      {
-        tag: "Bottleneck 06 — Mood and Motivation",
-        title: "Flat mood is a downstream cortisol or hormonal suppression signal.",
-        body: "Mood flatness during an extended protocol is almost always downstream of elevated cortisol or hormonal suppression — not a standalone problem."
-      }
+      { tag: "Bottleneck 02 — Fat Loss Stalled", title: "Output capacity is the limiting variable.", body: "Fat loss has transitioned to output-driven. The question is whether cortisol elevation from extended restriction is part of what is suppressing fat mobilization." },
+      { tag: "Bottleneck 03 — Energy Decline", title: "Energy output is being compressed by the caloric environment.", body: "Gradual energy decline during a sustained deficit often involves cortisol as one of the primary mechanisms. The body under prolonged restriction increases cortisol — and that elevation becomes a ceiling." },
+      { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood is a downstream cortisol or hormonal suppression signal.", body: "Mood flatness during an extended protocol is almost always downstream of elevated cortisol or hormonal suppression — not a standalone problem." }
     ],
-    interaction: "When all three appear together, the research consistently points to a cortisol ceiling as the variable driving the entire picture. Treating each bottleneck separately and adding three different compounds tends to produce an unreadable result. Identifying the cortisol component first is the correct diagnostic sequence before any compound decision. This is a pattern the audit is specifically structured to diagnose."
+    interaction: "When all three appear together, the research consistently points to a cortisol ceiling as the variable driving the entire picture. The Research Protocol Bible covers this specific pattern — the cortisol-driven triple bottleneck — and the diagnostic sequence for identifying the correct upstream cause before making any compound decision.",
+    guide: "rpb"
   },
   "mood,muscle,phase3": {
     tag: "Phase 3 — Multiple Active Bottlenecks",
     title: "Training decline, muscle loss, and mood flatness together — Phase 3 with compounding signals.",
     bottlenecks: [
-      {
-        tag: "Phase 3 — Recovery Strain",
-        title: "The system is under recovery strain from sustained restriction and training load.",
-        body: "Phase 3 occurs when the caloric deficit that drove fat loss in Phase 2 becomes the ceiling on recovery capacity. Training performance declines because the body cannot recover fast enough between sessions."
-      },
-      {
-        tag: "Bottleneck 01 — Losing Muscle",
-        title: "Lean mass is being broken down alongside the recovery strain.",
-        body: "In Phase 3, lean mass preservation becomes critical. Without an adequate anabolic signal, the combination of caloric restriction and training load accelerates muscle breakdown."
-      },
-      {
-        tag: "Bottleneck 06 — Mood and Motivation",
-        title: "Flat mood at this stage is almost always a downstream cortisol signal.",
-        body: "Phase 3 increases cortisol load from both the deficit and the training stimulus. Mood and drive flatness here is a physiological signal — not a willpower issue."
-      }
+      { tag: "Phase 3 — Recovery Strain", title: "The system is under recovery strain from sustained restriction and training load.", body: "Phase 3 occurs when the caloric deficit that drove fat loss in Phase 2 becomes the ceiling on recovery capacity. Training performance declines because the body cannot recover fast enough between sessions." },
+      { tag: "Bottleneck 01 — Losing Muscle", title: "Lean mass is being broken down alongside the recovery strain.", body: "In Phase 3, lean mass preservation becomes critical. Without an adequate anabolic signal, the combination of caloric restriction and training load accelerates muscle breakdown." },
+      { tag: "Bottleneck 06 — Mood and Motivation", title: "Flat mood at this stage is almost always a downstream cortisol signal.", body: "Phase 3 increases cortisol load from both the deficit and the training stimulus. Mood and drive flatness here is a physiological signal — not a willpower issue." }
     ],
-    interaction: "This combination in Phase 3 is a systemic problem, not three separate bottlenecks. The recovery strain is creating the conditions for muscle loss, and the cortisol elevation from both the deficit and the training load is producing the mood suppression. Adding compounds without first adjusting the protocol structure typically makes all three worse. The RPB covers Phase 3 compound logic specifically for this presentation."
+    interaction: "This combination in Phase 3 is a systemic problem, not three separate bottlenecks. The Retatrutide, Tesamorelin, and Ipamorelin guide covers Phase 3 recovery strain and the GH secretagogue stack decisions the research supports for this specific presentation — including the protocol structure adjustments that need to happen before any compound addition.",
+    guide: "stack"
   }
+};
+
+const RESULT_GUIDE_MAP = {
+  r_phase1_early: { guide: "reta", explanation: "The Retatrutide: From First Dose to Full Protocol guide covers the titration window in detail — what the research shows about weeks one through six, how to read early signals correctly, and why escalating the dose before the effective range is established almost always produces a worse outcome than waiting. If you are in this window and unsure whether it is working, this guide gives you the framework to evaluate it without guessing." },
+  r_no_intake: { guide: "reta", explanation: "The Retatrutide guide covers the intake suppression mechanism and what an absent appetite response actually signals. It walks through the three most common causes — under-dosing, active titration, and reconstitution error — and how to distinguish between them. If the compound is not suppressing appetite yet, this is where you find out why before changing anything." },
+  r_caloric_audit: { guide: "reta", explanation: "The Retatrutide guide covers the Phase 2 metabolic adaptation pattern directly — why a real deficit at week 4 often becomes a marginal one by week 12, and how to run the 7-day intake audit that identifies the actual gap. Most plateaus at this stage are not compound failures. They are intake drift that becomes invisible without tracking. This guide shows you how to confirm which one you are dealing with." },
+  r_foundation_sleep: { guide: "rpb", explanation: "The Research Protocol Bible covers the full Foundation Gate framework — the four inputs that determine whether any compound can produce a measurable result. Sleep is Gate 1, and the RPB covers the specific GLP-1 timing and dose variables that most commonly drive disruption. Before adding anything, this framework tells you what to check first and in what order." },
+  r_foundation_stimulant: { guide: "rpb", explanation: "The Research Protocol Bible covers the Foundation Gate including the stimulant load variable and why daily use creates a cortisol ceiling that caps what any metabolic compound can accomplish. The RPB walks through how to evaluate whether stimulant load is the active ceiling in your protocol and what the correct sequencing looks like before any compound addition." },
+  r_foundation_protein: { guide: "rpb", explanation: "The Research Protocol Bible covers protein as a Foundation Gate variable and why GLP-1-driven appetite suppression so commonly pulls protein intake down alongside calories. The RPB gives you the framework for correcting protein intake in the context of an active protocol without disrupting the caloric environment that is driving fat loss." },
+  r_bn01: { guide: "stack", explanation: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the lean mass bottleneck directly. It walks through which GH secretagogue combinations the research supports for lean mass preservation during an active GLP-1 protocol, the sequencing logic for introducing them, and what to rule out on the GLP-1 side before adding anything. If you are losing muscle on a cut, this guide covers the specific stack decisions that address it." },
+  r_bn02_early: { guide: "reta", explanation: "The Retatrutide guide covers the three checks to run before interpreting a recent stall as a bottleneck — precise caloric tracking, dose and timing review, and compound-specific stall pattern identification. A stall under three weeks is almost always one of these three things. This guide walks through all of them in the context of an active retatrutide or GLP-1 protocol." },
+  r_bn02: { guide: "reta", explanation: "The Retatrutide guide covers the Phase 2 fat loss pattern in detail — what drives the transition from intake-driven to output-driven fat loss, which fat mobilization variables the research points to at this stage, and how to evaluate whether your protocol has genuinely entered Phase 2 or whether a caloric drift is the simpler explanation. This is the most common plateau pattern on GLP-1 protocols and this guide covers it directly." },
+  r_bn02_extended: { guide: "rpb", explanation: "The Research Protocol Bible covers the extended stall pattern and the framework for identifying overlapping bottlenecks. When a plateau has lasted more than six weeks and standard Phase 2 interventions have not moved it, the RPB gives you the diagnostic sequence for finding the second variable running underneath the first — which is almost always what an extended stall represents." },
+  r_bn03_dose: { guide: "reta", explanation: "The Retatrutide guide covers the dose-driven energy drop pattern and how to distinguish it from a genuine energy bottleneck. When energy falls shortly after an escalation, the compound is most likely creating a deficit the body cannot sustain output under. This guide walks through the evaluation logic and what the data supports as the correct first move before adding anything." },
+  r_bn03: { guide: "rpb", explanation: "The Research Protocol Bible covers all three presentations of the gradual energy decline pattern and the compound logic that applies to each. Getting the presentation right matters more than the compound choice itself — the RPB gives you the framework for identifying which of the three you are in before making any addition." },
+  r_bn03_baseline: { guide: "rpb", explanation: "The Research Protocol Bible covers the Foundation Gate in full, which is where baseline energy issues almost always trace back to. The RPB walks through all four foundation inputs in order and explains why adding an energy compound before ruling out foundational causes typically amplifies the problem rather than correcting it." },
+  r_bn04: { guide: "rpb", explanation: "The Research Protocol Bible covers the sleep and recovery bottleneck protocol — the timing and dose variables to check first, and the specific compounds the research supports for each presentation of sleep disruption during an active protocol. Sleep disruption that begins with a protocol change is almost always a protocol variable before it is a bottleneck. The RPB covers how to tell the difference." },
+  r_bn05: { guide: "reta", explanation: "The Retatrutide guide covers GI symptoms in the context of an active GLP-1 protocol and how to distinguish between the three presentations — dose timing driven nausea, gut motility issues from sustained suppression, and mucosal stress from extended restriction. Each one responds differently. This guide gives you the framework to identify which pattern applies before reaching for an intervention." },
+  r_bn06: { guide: "rpb", explanation: "The Research Protocol Bible covers the mood and motivation bottleneck and the diagnostic sequence for identifying whether the upstream driver is cortisol elevation, hormonal suppression, or energy depletion. For male researchers past week 12, the RPB covers the hormonal suppression evaluation specifically — adding mood support compounds before identifying the upstream cause rarely resolves it." },
+  r_bn07: { guide: "rpb", explanation: "The Research Protocol Bible covers the dose escalation pattern and the five checks to run before any further dose change. The RPB is direct on this: when escalating the dose does not move the plateau, the dose was not the limiting variable. The framework tells you what is." },
+  r_bn07_stall: { guide: "rpb", explanation: "The Research Protocol Bible covers the pre-escalation checklist and the Phase 2 assessment that almost always identifies the actual limiting variable when a stall triggered a dose increase. Running both in sequence is the correct diagnostic approach — the RPB walks through both in order." },
+  r_phase3: { guide: "stack", explanation: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers Phase 3 recovery strain and the compound logic that applies when training performance declines alongside a stall. This is a different compound framework than Phase 2 — the guide covers the specific GH secretagogue stack decisions the research supports for rebuilding output capacity without adding metabolic demand the system cannot handle." },
+  r_phase4: { guide: "rpb", explanation: "The Research Protocol Bible covers the Phase 4 framework and what the research supports for rebuilding recovery capacity when the sleep-stall-recovery pattern has collapsed together. Phase 4 requires a different compound logic than any earlier phase — adding more at this stage almost always makes things worse. The RPB covers what to do instead and in what order." },
+  r_gh_insulin: { guide: "stack", explanation: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the fasted window requirement for GH secretagogues in detail — including how an active GLP-1 protocol changes the required window by slowing gastric emptying. A standard two to three hour post-meal window is often insufficient on a combined protocol. This guide covers the specific timing logic for each compound in the stack." },
+  r_gh_bedtime: { guide: "stack", explanation: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers injection timing for every GH secretagogue in the stack and explains specifically why bedtime Tesamorelin is the most common timing mistake. It covers the active window for each compound, when daytime versus bedtime injection is rational, and the one exception where bedtime injection is the correct choice." },
+  r_gh_mixed: { guide: "stack", explanation: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the consistency requirements for GH secretagogue protocols and why varying the injection window produces inconsistent results regardless of compound quality. It walks through how to establish a fixed injection protocol and what to expect once consistency is established." },
+  r_gh_environment: { guide: "stack", explanation: "The Retatrutide, Tesamorelin, and Ipamorelin guide covers the environmental inputs that govern GH pulse quality — sleep depth, cortisol context, insulin environment, and somatostatin brake at injection time. If the stack is not producing a measurable result, this guide walks through the environmental audit before concluding the compound is not working." },
+  r_repair_none: { guide: "rpb", explanation: "The Research Protocol Bible covers the tissue repair bottleneck including the three most common causes of a null result — reconstitution error, dose inconsistency, and environmental suppression of the repair signal. The RPB Reconstitution Reference is the first check to run. Most null repair results trace back to a preparation variable, not a compound selection problem." },
+  r_repair_slow: { guide: "rpb", explanation: "The Research Protocol Bible covers the tissue repair framework and how to evaluate whether the compound combination is correctly matched to the repair presentation. BPC-157 and TB-500 amplify existing repair signaling — the RPB covers what the signaling environment needs to look like for that amplification to produce a measurable result." },
+  r_longevity_general: { guide: "motsc", explanation: "The MOTS-C and SS-31 guide covers the general longevity stack decision directly — when each compound becomes the rational choice, how they interact with each other, and why foundational inputs need to be reasonably stable before longevity compounds produce their most meaningful results. If you are running a cellular health stack and trying to evaluate whether you have the right compounds in the right context, this guide addresses that decision." },
+  r_immune: { guide: "motsc", explanation: "The MOTS-C and SS-31 guide covers immune resilience and cellular support compounds and how to distinguish between the patterns that each one addresses. Immune suppression, systemic inflammation, and oxidative stress from a prolonged protocol each call for a different approach — this guide covers the framework for identifying which pattern applies." },
+  r_semax: { guide: "rpb", explanation: "The Research Protocol Bible covers the cognitive and mood section including Semax, Selank, and DSIP — when each one is the rational choice and how they interact with an active fat loss protocol. Baseline mental flatness that points to BDNF signaling is a specific pattern, and the RPB covers how to confirm that is what you are dealing with before making a compound decision." },
+  r_selank: { guide: "rpb", explanation: "The Research Protocol Bible covers the full cognitive and mood framework including when Selank is the correct choice over Semax based on the symptom presentation. An elevated stress response and anxiety pattern points to cortisol as the primary variable — the RPB covers the Selank mechanism, when it applies, and how it interacts with an active protocol." },
+  r_cog_compound: { guide: "rpb", explanation: "The Research Protocol Bible covers compound interaction logic and how to systematically isolate which variable is driving a cognitive or mood change when the timing points to a recent protocol change. Adding a cognitive compound on top of an unidentified interaction almost never resolves it — the RPB gives you the isolation framework to find the actual cause." },
 };
 
 function getProgress(qid) {
   if (!qid) return 0;
   if (qid.startsWith("r_") || qid.startsWith("MULTI:")) return 100;
   const map = {
-    q_start: 5,
-    q_glp1_duration: 15,
-    q_glp1_early: 20,
-    q_glp1_status: 20,
-    q_glp1_no_start: 25,
-    q_glp1_stall_context: 28,
-    q_glp1_caloric: 32,
-    q_p3_training: 28,
-    q_p4_sleep: 28,
-    q_gh_duration: 15,
-    q_gh_early: 20,
-    q_gh_results: 22,
-    q_gh_environment: 35,
-    q_gh_timing: 35,
-    q_gh_sleep: 42,
-    q_peptide_type: 15,
-    q_peptide_repair: 25,
-    q_peptide_repair_found: 35,
-    q_peptide_longevity: 25,
-    q_peptide_cog: 25,
-    q_peptide_cog_cause: 35,
-    q_found_sleep: 48,
-    q_found_sleep_p3: 48,
-    q_found_stimulant: 58,
-    q_found_stimulant_p3: 58,
-    q_found_protein: 68,
-    q_found_protein_p3: 68,
-    q_bn_main: 78,
-    q_bn_p3: 78,
-    q_fatlose_dose: 86,
-    q_fatlose_duration: 92,
+    q_start: 5, q_glp1_duration: 15, q_glp1_early: 20, q_glp1_status: 20,
+    q_glp1_no_start: 25, q_glp1_stall_context: 28, q_glp1_caloric: 32,
+    q_p3_training: 28, q_p4_sleep: 28, q_gh_duration: 15, q_gh_early: 20,
+    q_gh_results: 22, q_gh_environment: 35, q_gh_timing: 35, q_gh_sleep: 42,
+    q_peptide_type: 15, q_peptide_repair: 25, q_peptide_repair_found: 35,
+    q_peptide_longevity: 25, q_peptide_cog: 25, q_peptide_cog_cause: 35,
+    q_found_sleep: 48, q_found_sleep_p3: 48, q_found_stimulant: 58,
+    q_found_stimulant_p3: 58, q_found_protein: 68, q_found_protein_p3: 68,
+    q_bn_main: 78, q_bn_p3: 78, q_fatlose_dose: 86, q_fatlose_duration: 92,
     q_energy_timing: 88
   };
   return map[qid] || 50;
 }
 
-function CTABlock({ mode = "rpb" }) {
-  const isAuditFirst = mode === "audit";
+function CTABlock({ resultKey }) {
+  const isMultiKey = resultKey && resultKey.startsWith("MULTI:");
+  const multiKey = isMultiKey ? resultKey.replace("MULTI:", "") : null;
+  const multiResult = multiKey ? MULTI_RESULTS[multiKey] : null;
+  const guideKey = isMultiKey
+    ? (multiResult ? multiResult.guide : "rpb")
+    : (RESULT_GUIDE_MAP[resultKey] ? RESULT_GUIDE_MAP[resultKey].guide : "rpb");
+  const explanation = !isMultiKey && RESULT_GUIDE_MAP[resultKey] ? RESULT_GUIDE_MAP[resultKey].explanation : null;
+  const guide = GUIDES[guideKey];
 
   return (
     <div className="pt-cta-block">
-      <div className="pt-cta-label">Next step</div>
-
-      {isAuditFirst ? (
-        <>
-          <p className="pt-cta-text">
-            This is not a simple single-variable issue. The pattern suggests overlapping bottlenecks or a case where sequence matters more than another compound guess. This is exactly what the audit is built for.
-          </p>
-          <a className="pt-pill" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">
-            Go deeper with a Full Audit
-          </a>
-          <a className="pt-pill-outline" href="https://project-theo.com/collections/browse-research-guides" target="_blank" rel="noopener noreferrer">
-            Or browse the research library
-          </a>
-        </>
-      ) : (
-        <>
-          <p className="pt-cta-text">
-            This looks like a framework problem more than a fully custom analysis problem. The Research Protocol Bible covers the bottleneck logic, the compound sequence, what not to add, and the correct next move.
-          </p>
-          <a className="pt-pill" href="https://project-theo.com/collections/browse-research-guides" target="_blank" rel="noopener noreferrer">
-            View the Research Guide Library
-          </a>
-          <a className="pt-pill-outline" href="https://project-theo.com/pages/protocol-audit" target="_blank" rel="noopener noreferrer">
-            Or go deeper with a Full Audit
-          </a>
-        </>
+      <div className="pt-cta-label">Why this guide addresses your result</div>
+      {explanation && <p className="pt-cta-text">{explanation}</p>}
+      {guide && (
+        <a className="pt-pill" href={guide.url} target="_blank" rel="noopener noreferrer">
+          {guide.label}
+        </a>
       )}
     </div>
   );
@@ -765,56 +663,31 @@ export default function App() {
   async function handleEmailSubmit(e) {
     e.preventDefault();
     const trimmedEmail = emailValue.trim();
-
     if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       setSubmitError("Enter a valid email address to unlock your result.");
       return;
     }
-
     setIsSubmitting(true);
     setSubmitError("");
-
     try {
       const response = await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`, {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-          revision: "2024-02-15"
-        },
+        headers: { "content-type": "application/json", revision: "2024-02-15" },
         body: JSON.stringify({
           data: {
             type: "subscription",
             attributes: {
               custom_source: "Protocol Bottleneck Tool",
-              profile: {
-                data: {
-                  type: "profile",
-                  attributes: {
-                    email: trimmedEmail
-                  }
-                }
-              }
+              profile: { data: { type: "profile", attributes: { email: trimmedEmail } } }
             },
-            relationships: {
-              list: {
-                data: {
-                  type: "list",
-                  id: KLAVIYO_LIST_ID
-                }
-              }
-            }
+            relationships: { list: { data: { type: "list", id: KLAVIYO_LIST_ID } } }
           }
         })
       });
-
       const data = await response.json().catch(() => null);
-
-      if (!response.ok) {
-        throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
-      }
-
+      if (!response.ok) throw new Error(data?.errors?.[0]?.detail || "Subscription failed");
       trackResultEvent(history[history.length - 1], trimmedEmail);
-setScreen("result");
+      setScreen("result");
     } catch (error) {
       setSubmitError(error.message || "Something went wrong. Try again in a moment.");
     } finally {
@@ -830,11 +703,7 @@ setScreen("result");
   function handleSingle(next) {
     setSelected([]);
     const targetIsResult = next.startsWith("r_") || next.startsWith("MULTI:");
-    if (targetIsResult) {
-      routeResult(next);
-    } else {
-      setHistory((h) => [...h, next]);
-    }
+    if (targetIsResult) { routeResult(next); } else { setHistory((h) => [...h, next]); }
   }
 
   function handleMultiToggle(id) {
@@ -847,11 +716,7 @@ setScreen("result");
     const next = q.multiNext(selected);
     setSelected([]);
     const targetIsResult = next.startsWith("r_") || next.startsWith("MULTI:");
-    if (targetIsResult) {
-      routeResult(next);
-    } else {
-      setHistory((h) => [...h, next]);
-    }
+    if (targetIsResult) { routeResult(next); } else { setHistory((h) => [...h, next]); }
   }
 
   function handleBack() {
@@ -877,8 +742,6 @@ setScreen("result");
   const singleResult = !isMulti && resultKey.startsWith("r_") ? RESULTS[resultKey] : null;
   const multiResult = multiKey ? MULTI_RESULTS[multiKey] : null;
 
-  const singleAuditFirst = ["r_bn02_extended", "r_bn07", "r_bn07_stall", "r_phase4"].includes(resultKey);
-
   return (
     <>
       <style>{styles}</style>
@@ -886,17 +749,11 @@ setScreen("result");
         <div className="pt-header">
           <div className="pt-eyebrow">Free Protocol Diagnostic</div>
           <h1 className="pt-title">Your protocol is not the problem. Finding the limiting variable is.</h1>
-          <p className="pt-sell-line">
-            Most people do not need another compound. They need a clearer read on what is actually failing.
-          </p>
-          <p className="pt-sell-sub">
-            This tool identifies the likely bottleneck first. Then it routes you to the right next step, whether that is the Research Protocol Bible or a full audit.
-          </p>
+          <p className="pt-sell-line">Most people do not need another compound. They need a clearer read on what is actually failing.</p>
+          <p className="pt-sell-sub">This tool identifies the likely bottleneck first. Then it routes you to the right research guide for your specific situation.</p>
           <p className="pt-spec-line">4 phases · 7 bottlenecks · layered result routing · 3 minutes</p>
           {screen === "start" && (
-            <button className="pt-pill" onClick={() => setScreen("questions")}>
-              Find Your Bottleneck
-            </button>
+            <button className="pt-pill" onClick={() => setScreen("questions")}>Find Your Bottleneck</button>
           )}
         </div>
 
@@ -911,40 +768,26 @@ setScreen("result");
             <div className="pt-step-label">{question.stepLabel}</div>
             <h2 className="pt-question">{question.question}</h2>
             {question.note && <p className="pt-question-note">{question.note}</p>}
-
             {question.multiSelect ? (
               <>
                 <p className="pt-multi-hint">Select all that apply</p>
                 <div className="pt-multi-options">
                   {question.options.map((opt) => (
-                    <button
-                      key={opt.id}
-                      className={`pt-option-multi${selected.includes(opt.id) ? " checked" : ""}`}
-                      onClick={() => handleMultiToggle(opt.id)}
-                    >
+                    <button key={opt.id} className={`pt-option-multi${selected.includes(opt.id) ? " checked" : ""}`} onClick={() => handleMultiToggle(opt.id)}>
                       {opt.label}
                     </button>
                   ))}
                 </div>
-                <button className="pt-pill" onClick={handleMultiContinue} disabled={selected.length === 0}>
-                  Continue
-                </button>
+                <button className="pt-pill" onClick={handleMultiContinue} disabled={selected.length === 0}>Continue</button>
               </>
             ) : (
               <div className="pt-options">
                 {question.options.map((opt, i) => (
-                  <button key={i} className="pt-option" onClick={() => handleSingle(opt.next)}>
-                    {opt.label}
-                  </button>
+                  <button key={i} className="pt-option" onClick={() => handleSingle(opt.next)}>{opt.label}</button>
                 ))}
               </div>
             )}
-
-            {history.length > 1 && (
-              <button className="pt-back" onClick={handleBack}>
-                ← Go back
-              </button>
-            )}
+            {history.length > 1 && <button className="pt-back" onClick={handleBack}>← Go back</button>}
           </div>
         )}
 
@@ -952,12 +795,9 @@ setScreen("result");
           <div className="pt-gate-screen fade-in">
             <div className="pt-gate-eyebrow">Almost there</div>
             <h2 className="pt-gate-title">Your bottleneck has been identified.</h2>
-            <p className="pt-gate-body">
-              Enter your email to unlock your result and receive the free Protocol Stall Guide — a diagnostic framework for the most common Phase 2 fat loss plateau, built on the same system this tool uses.
-            </p>
+            <p className="pt-gate-body">Enter your email to unlock your result and receive the free Protocol Stall Guide — a diagnostic framework for the most common Phase 2 fat loss plateau, built on the same system this tool uses.</p>
             <div className="pt-gate-divider" />
             <div className="pt-gate-form-label">Enter your email to unlock</div>
-
             <form className="pt-gate-form" onSubmit={handleEmailSubmit}>
               <input
                 className="pt-gate-input"
@@ -966,10 +806,7 @@ setScreen("result");
                 autoComplete="email"
                 placeholder="Enter your email"
                 value={emailValue}
-                onChange={(e) => {
-                  setEmailValue(e.target.value);
-                  if (submitError) setSubmitError("");
-                }}
+                onChange={(e) => { setEmailValue(e.target.value); if (submitError) setSubmitError(""); }}
               />
               <button className="pt-pill" type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Unlocking..." : "Unlock My Result"}
@@ -986,19 +823,15 @@ setScreen("result");
                 <div className="pt-result-tag">{singleResult.tag}</div>
                 <h2 className="pt-result-title">{singleResult.title}</h2>
                 <p className="pt-result-body">{singleResult.body}</p>
-
                 {singleResult.whatItMeans && (
                   <div className="pt-result-what">
                     <div className="pt-result-what-label">What this means for your protocol</div>
                     <p className="pt-result-what-text">{singleResult.whatItMeans}</p>
                   </div>
                 )}
-
                 <div className="pt-divider" />
-                <CTABlock mode={singleAuditFirst ? "audit" : "rpb"} />
-                <button className="pt-restart" onClick={handleRestart}>
-                  Start over
-                </button>
+                <CTABlock resultKey={resultKey} />
+                <button className="pt-restart" onClick={handleRestart}>Start over</button>
               </div>
             )}
 
@@ -1006,7 +839,6 @@ setScreen("result");
               <div className="pt-result fade-in">
                 <div className="pt-result-tag">{multiResult.tag}</div>
                 <h2 className="pt-result-title">{multiResult.title}</h2>
-
                 {multiResult.bottlenecks.map((bn, i) => (
                   <div className="pt-bn-block" key={i}>
                     <div className="pt-bn-block-tag">{bn.tag}</div>
@@ -1014,27 +846,21 @@ setScreen("result");
                     <p className="pt-bn-block-body">{bn.body}</p>
                   </div>
                 ))}
-
                 <div className="pt-result-what">
                   <div className="pt-result-what-label">How these interact</div>
                   <p className="pt-result-what-text">{multiResult.interaction}</p>
                 </div>
-
                 <div className="pt-divider" />
-                <CTABlock mode="audit" />
-                <button className="pt-restart" onClick={handleRestart}>
-                  Start over
-                </button>
+                <CTABlock resultKey={resultKey} />
+                <button className="pt-restart" onClick={handleRestart}>Start over</button>
               </div>
             )}
           </>
         )}
 
         <p className="pt-disclaimer">
-          For educational and research purposes only. Not medical advice.
-          <br />
-          Not for human use guidance. Consult a qualified medical professional
-          <br />
+          For educational and research purposes only. Not medical advice.<br />
+          Not for human use guidance. Consult a qualified medical professional<br />
           before beginning any research protocol.
         </p>
       </div>
