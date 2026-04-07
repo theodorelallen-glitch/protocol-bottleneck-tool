@@ -8,6 +8,12 @@ async function trackResultEvent(resultKey, email) {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        const GUIDES = {
+  rpb: { label: "The Research Protocol Bible — $97", url: "https://project-theo.com/products/the-research-protocol-bible" },
+  reta: { label: "Retatrutide: From First Dose to Full Protocol — $39.99", url: "https://project-theo.com/products/retatrutide-from-first-dose-to-full-protocol" },
+  stack: { label: "Retatrutide, Tesamorelin, and Ipamorelin Guide — $29.99", url: "https://project-theo.com/products/retatrutide-tesamorelin-and-ipamorelin" },
+  motsc: { label: "MOTS-C and SS-31 Guide — $39.99", url: "https://project-theo.com/products/motsc-ss31" },
+};
         revision: "2024-02-15"
       },
       body: JSON.stringify({
