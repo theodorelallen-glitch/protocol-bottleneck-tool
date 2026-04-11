@@ -2,12 +2,14 @@ import { useState } from "react";
 
 const KLAVIYO_COMPANY_ID = "XGm6Si";
 const KLAVIYO_LIST_ID = "R3YAQh";
+const CATALOG_URL = "https://project-theo.com/collections/browse-research-guides";
 
 const GUIDES = {
-  rpb: { label: "The Research Protocol Bible — $97", url: "https://project-theo.com/products/the-research-protocol-bible" },
-  reta: { label: "Retatrutide: From First Dose to Full Protocol — $39.99", url: "https://project-theo.com/products/retatrutide-from-first-dose-to-full-protocol" },
-  stack: { label: "Retatrutide, Tesamorelin, and Ipamorelin Guide — $29.99", url: "https://project-theo.com/products/retatrutide-tesamorelin-and-ipamorelin" },
-  motsc: { label: "MOTS-C and SS-31 Guide — $39.99", url: "https://project-theo.com/products/motsc-ss31" },
+  rpb: { label: "Research Protocol Bible", url: CATALOG_URL },
+  reta: { label: "Retatrutide Guide", url: CATALOG_URL },
+  stack: { label: "Retatrutide, Tesamorelin, and Ipamorelin Guide", url: CATALOG_URL },
+  motsc: { label: "MOTS-C and SS-31 Guide", url: CATALOG_URL },
+  catalog: { label: "Research Guides", url: CATALOG_URL },
 };
 
 async function trackResultEvent(resultKey, email) {
@@ -87,6 +89,7 @@ const styles = `
   .pt-cta-block { background: rgba(232,224,208,0.05); border: 1px solid rgba(232,224,208,0.12); padding: 28px 24px; margin-top: 36px; border-radius: 2px; }
   .pt-cta-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(232,224,208,0.45); margin-bottom: 12px; }
   .pt-cta-text { font-size: 14px; line-height: 1.75; color: rgba(232,224,208,0.65); margin-bottom: 22px; }
+  .pt-audit-mention { font-size: 13px; line-height: 1.75; color: rgba(232,224,208,0.45); margin-top: 18px; font-style: italic; }
   .pt-restart { display: block; text-align: center; margin-top: 40px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(232,224,208,0.35); cursor: pointer; background: none; border: none; font-family: 'Jost', sans-serif; transition: color 0.2s; }
   .pt-restart:hover { color: rgba(232,224,208,0.6); }
   .pt-disclaimer { text-align: center; font-size: 10px; color: rgba(232,224,208,0.3); letter-spacing: 1px; margin-top: 52px; line-height: 1.8; padding: 0 24px; }
@@ -95,6 +98,112 @@ const styles = `
 `;
 
 const QUESTIONS = {
+  // ─── NEW: Opening position question ───────────────────────────────────────
+  q_position: {
+    stepLabel: "Step 1 — Where You Are",
+    question: "Where are you in your research right now?",
+    note: "This determines which diagnostic path applies to your situation.",
+    options: [
+      { label: "I am researching but have not started a protocol yet", next: "q_pre_goal" },
+      { label: "I am currently running a protocol", next: "q_start" },
+      { label: "I was running a protocol and have stopped or paused", next: "q_start" },
+    ],
+  },
+
+  // ─── NEW: Pre-protocol path ────────────────────────────────────────────────
+  q_pre_goal: {
+    stepLabel: "Step 1 — Research Focus",
+    question: "What is the primary result you are researching toward?",
+    note: null,
+    options: [
+      { label: "Fat loss — reducing body fat while preserving muscle", next: "q_pre_barrier" },
+      { label: "Body recomposition — changing the ratio of fat to muscle", next: "q_pre_barrier" },
+      { label: "Energy and recovery — performance without significant fat loss as the goal", next: "q_pre_energy_barrier" },
+      { label: "Not sure yet — still trying to understand the landscape", next: "q_pre_landscape" },
+    ],
+  },
+  q_pre_barrier: {
+    stepLabel: "Step 1 — Research Focus",
+    question: "What is the single biggest thing stopping you from starting?",
+    note: null,
+    options: [
+      { label: "Not sure which compound fits my situation", next: "q_pre_foundation" },
+      { label: "Not sure if my foundation is ready to support a protocol", next: "q_pre_foundation" },
+      { label: "Concerned about side effects and how to manage them", next: "q_pre_sideeffects" },
+      { label: "Still trying to understand the research and mechanism", next: "q_pre_mechanism" },
+    ],
+  },
+  q_pre_energy_barrier: {
+    stepLabel: "Step 1 — Research Focus",
+    question: "What does the energy or recovery problem look like right now?",
+    note: null,
+    options: [
+      { label: "Energy is declining despite adequate sleep and nutrition", next: "q_pre_foundation" },
+      { label: "Recovery between training sessions is slow", next: "q_pre_foundation" },
+      { label: "Both energy and recovery are the issue", next: "q_pre_foundation" },
+    ],
+  },
+  q_pre_foundation: {
+    stepLabel: "Step 2 — Foundation Check",
+    question: "Before any compound is considered, how stable are these right now?",
+    note: "Select all that currently apply to your situation.",
+    multiSelect: true,
+    options: [
+      { id: "sleep", label: "Sleep is consistently under 6 hours or poor quality" },
+      { id: "protein", label: "Protein intake is inconsistent or likely too low" },
+      { id: "stimulant", label: "Relying on stimulants daily just to reach baseline function" },
+      { id: "none", label: "None of these — foundation inputs are reasonably stable" },
+    ],
+    multiNext: (ids) => {
+      if (ids.includes("none") || ids.length === 0) return "q_pre_research_duration";
+      return "r_pre_foundation";
+    },
+  },
+  q_pre_sideeffects: {
+    stepLabel: "Step 2 — Side Effect Concerns",
+    question: "Which side effect area concerns you most?",
+    note: null,
+    options: [
+      { label: "GI symptoms — nausea, discomfort, or appetite changes", next: "r_pre_gi_concern" },
+      { label: "Muscle loss during a fat loss protocol", next: "r_pre_muscle_concern" },
+      { label: "Sleep disruption from the protocol", next: "r_pre_sleep_concern" },
+      { label: "Not sure what to expect at all", next: "r_pre_general_concern" },
+    ],
+  },
+  q_pre_mechanism: {
+    stepLabel: "Step 2 — Research Clarity",
+    question: "What part of the mechanism is most unclear?",
+    note: null,
+    options: [
+      { label: "How GLP-1 compounds actually work beyond just appetite suppression", next: "r_pre_glp1_mechanism" },
+      { label: "Why different compounds are used at different phases", next: "r_pre_phase_logic" },
+      { label: "How to know which compound matches my specific situation", next: "r_pre_compound_match" },
+      { label: "What a support compound is and when it becomes relevant", next: "r_pre_support_logic" },
+    ],
+  },
+  q_pre_research_duration: {
+    stepLabel: "Step 2 — Research Context",
+    question: "How long have you been researching this area?",
+    note: null,
+    options: [
+      { label: "Less than a month — still in early research", next: "r_pre_early_researcher" },
+      { label: "One to three months — building a picture", next: "r_pre_ready" },
+      { label: "More than three months — have a clear picture, ready to act", next: "r_pre_ready_experienced" },
+    ],
+  },
+  q_pre_landscape: {
+    stepLabel: "Step 1 — Research Focus",
+    question: "What has your research focused on so far?",
+    note: null,
+    options: [
+      { label: "GLP-1 compounds — semaglutide, tirzepatide, or retatrutide", next: "q_pre_foundation" },
+      { label: "Peptides for recovery, repair, or longevity", next: "q_pre_foundation" },
+      { label: "GH secretagogues — CJC, Tesamorelin, Ipamorelin", next: "q_pre_foundation" },
+      { label: "No specific focus yet — still mapping the landscape", next: "r_pre_early_researcher" },
+    ],
+  },
+
+  // ─── EXISTING: Active protocol path (unchanged) ───────────────────────────
   q_start: {
     stepLabel: "Step 1 — Protocol Type",
     question: "What best describes your current research protocol?",
@@ -442,6 +551,93 @@ const QUESTIONS = {
 };
 
 const RESULTS = {
+  // ─── NEW: Pre-protocol results ─────────────────────────────────────────────
+  r_pre_foundation: {
+    tag: "Foundation — Pre-Protocol",
+    title: "The foundation needs to be stable before a compound has the conditions to work.",
+    body: "Every compound in the research literature produces its most meaningful results inside a reasonably stable physiological environment. Sleep deprivation suppresses the hormonal signaling that fat loss and recovery compounds depend on. Inadequate protein removes the substrate that lean mass preservation compounds are trying to work with. Daily stimulant use elevates cortisol and creates a ceiling on what any metabolic compound can accomplish. None of this is disqualifying. But adding a compound before correcting these inputs means running an experiment inside a broken environment — and the result, whatever it is, will not be readable.",
+    whatItMeans: "The research guides cover the Foundation Gate in full — what each input does to compound efficacy and the order in which to address them before starting any protocol. Starting here produces cleaner results and a more accurate read from week one.",
+    auditMention: null,
+  },
+  r_pre_gi_concern: {
+    tag: "Pre-Protocol — Side Effect Awareness",
+    title: "GI symptoms are the most common early challenge and the most manageable.",
+    body: "GLP-1 compounds work partly by slowing gastric emptying — the rate at which the stomach moves food through. That mechanism is also what produces nausea and early GI discomfort in a subset of researchers. Research suggests most GI symptoms are dose and timing variables rather than compound incompatibilities. They appear most commonly during the titration phase and resolve or reduce significantly once the effective dose range is established and timing is optimized. The researchers who manage this best are the ones who understand the mechanism before it happens rather than reacting to it after.",
+    whatItMeans: "The Retatrutide guide covers GI symptom management in the context of an active GLP-1 protocol — the three distinct presentations, the dose and timing variables that drive each one, and how to distinguish a manageable titration response from a signal that something else is wrong.",
+    auditMention: null,
+  },
+  r_pre_muscle_concern: {
+    tag: "Pre-Protocol — Lean Mass Preservation",
+    title: "Muscle loss during a fat loss protocol is real — and it is addressable before it starts.",
+    body: "Caloric restriction tells the body to break down stored energy. Without a counteracting signal, that breakdown pulls from both fat and muscle. Research is consistent on what drives lean mass preservation: adequate protein intake at or above 0.7 to 1 gram per pound of lean body mass, a training stimulus that signals muscle as necessary tissue, and — at certain phases — a GH secretagogue support layer that adds an anabolic signal the deficit removes. Understanding which of these applies to your situation before starting means the protocol is designed correctly from day one rather than correcting a problem after it is visible.",
+    whatItMeans: "The Research Protocol Bible covers lean mass preservation across all four protocol phases — which inputs protect it, when a GH support compound becomes the rational addition, and the sequencing logic that prevents the most common lean mass mistakes on an active fat loss protocol.",
+    auditMention: null,
+  },
+  r_pre_sleep_concern: {
+    tag: "Pre-Protocol — Sleep and Protocol Timing",
+    title: "Sleep disruption from a protocol is almost always a timing variable, not a compound problem.",
+    body: "GLP-1 compounds, particularly retatrutide, activate a glucagon receptor that produces a thermogenic effect — meaning it pushes the body toward burning stored energy. Injecting in the evening or at bedtime means that activation peaks during sleep, which can disrupt sleep architecture in a meaningful way. This is not a sign the compound is not working. It is a sign the timing is wrong. Research suggests morning injection eliminates or significantly reduces sleep disruption for most researchers. Knowing this before starting means it is a non-issue from the beginning.",
+    whatItMeans: "The Retatrutide guide covers injection timing in detail — the mechanism behind morning versus evening injection, why timing matters differently for retatrutide than for other GLP-1 compounds, and what the data shows about sleep disruption as a timing variable.",
+    auditMention: null,
+  },
+  r_pre_general_concern: {
+    tag: "Pre-Protocol — Setting Expectations",
+    title: "Understanding what to expect from week one removes most of what makes protocols fail.",
+    body: "The most common reason protocols underperform is not a compound selection problem. It is a misread of what normal looks like. Early water and glycogen shifts inflate apparent fat loss in weeks one through four, then disappear — which looks like a stall but is just the protocol settling into its actual rate. GI symptoms during titration look like compound intolerance but are almost always dose and timing variables. Energy changes during a deficit look like a compound problem but are usually a caloric or foundation input issue. Researchers who understand these patterns before they happen do not make the reactive decisions that derail most protocols.",
+    whatItMeans: "The Research Protocol Bible covers the full phase framework from the start — what each phase looks like, what normal variation looks like at each stage, and how to read results accurately rather than reacting to them.",
+    auditMention: null,
+  },
+  r_pre_glp1_mechanism: {
+    tag: "Pre-Protocol — Mechanism Clarity",
+    title: "GLP-1 compounds do more than suppress appetite — and understanding the full mechanism changes how you use them.",
+    body: "GLP-1 receptors are found in the gut, brain, and pancreas. The gut signal slows gastric emptying and reduces appetite. The brain signal reduces what researchers call food noise — the constant low-level preoccupation with food that drives overconsumption even when the person is not genuinely hungry. The pancreatic signal improves insulin sensitivity, which affects how the body handles carbohydrates and fat storage. Retatrutide adds a third receptor — glucagon — which pushes toward burning stored energy rather than just eating less. Each mechanism has practical implications for how the protocol behaves and what to expect at each phase.",
+    whatItMeans: "The Retatrutide guide and the Research Protocol Bible both cover the mechanism in plain language — what each receptor does, how that translates into observable results, and why the same compound works differently for different researchers depending on which mechanism is the active limiting variable.",
+    auditMention: null,
+  },
+  r_pre_phase_logic: {
+    tag: "Pre-Protocol — Phase Framework",
+    title: "The phase framework is what separates researchers who figure it out from those who keep cycling through compounds.",
+    body: "Fat loss does not fail because a compound stops working. It moves through phases, and at each phase the limiting variable shifts. Phase 1 is intake-driven — the GLP-1 compound is the rational tool and nothing else is needed. Phase 2 is output-driven — the intake mechanism has done its job and the body needs a fat mobilization signal. Phase 3 is recovery-driven — the deficit that drove fat loss in Phase 2 has become the ceiling on recovery capacity. Phase 4 is sleep and GH pulsatility-driven. Adding a Phase 2 compound in Phase 1 adds complexity without benefit. Using a Phase 3 compound in Phase 2 makes recovery worse. The phase has to be identified first.",
+    whatItMeans: "The Research Protocol Bible is built around the phase framework. It covers all four phases in detail — how to identify which one applies, what the rational compound logic is at each stage, and why the sequence matters more than the compound choice.",
+    auditMention: null,
+  },
+  r_pre_compound_match: {
+    tag: "Pre-Protocol — Compound Selection",
+    title: "The right compound is not the strongest one — it is the one that addresses the actual limiting variable.",
+    body: "Semaglutide is the rational starting point when intake is the primary limiting variable and the researcher has no prior GLP-1 experience. Tirzepatide adds a GIP receptor that produces greater fat loss in head-to-head data and better GI tolerance for most researchers. Retatrutide adds a glucagon receptor that drives thermogenesis — it is the rational next step when a researcher has plateaued on semaglutide or tirzepatide and needs a different mechanism rather than more of the same one. Choosing based on which compound sounds strongest rather than which mechanism addresses the actual bottleneck is the most common selection mistake.",
+    whatItMeans: "The Research Protocol Bible covers the GLP-1 starting point decision and the compound selection framework in the first chapter — how to identify which compound fits the actual limiting variable before starting, not after the first plateau.",
+    auditMention: null,
+  },
+  r_pre_support_logic: {
+    tag: "Pre-Protocol — Support Compound Logic",
+    title: "A support compound is not an upgrade — it is a tool for a specific bottleneck that does not exist yet.",
+    body: "Support compounds — GH secretagogues, MOTS-c, SS-31, BPC-157 — are often researched before a foundation compound is even started. The logic is usually that more is better or that starting with a full stack produces faster results. Research consistently shows the opposite. Support compounds amplify signals that the foundation compound creates. Adding them before the foundation is established means running a more complex protocol without the signal they are designed to amplify. The result is added complexity and cost with no additional benefit — and a protocol that is harder to read if something goes wrong.",
+    whatItMeans: "The Research Protocol Bible covers the support compound decision framework — which bottleneck each support compound addresses, when that bottleneck becomes the active limiting variable, and why the sequencing matters more than the compound itself.",
+    auditMention: null,
+  },
+  r_pre_early_researcher: {
+    tag: "Pre-Protocol — Early Research Phase",
+    title: "You are still building the picture — and starting with the right framework matters more than starting fast.",
+    body: "The most common mistake in early research is reaching for a compound decision before the phase and mechanism framework is clear. Researchers who start with a clear understanding of how the phase logic works, what each compound actually does at the receptor level, and what the foundation needs to look like produce cleaner results and make fewer reactive decisions. The researchers who start fast and learn as they go spend most of their time trying to read a protocol that has too many variables to produce a readable result.",
+    whatItMeans: "The Research Protocol Bible is the logical starting point. It covers the full framework — phase identification, compound selection logic, foundation requirements, and the bottleneck diagnostic system — before any protocol decision is made. The researchers who use it as a starting framework rather than a reference tool consistently report cleaner results.",
+    auditMention: null,
+  },
+  r_pre_ready: {
+    tag: "Pre-Protocol — Ready to Start",
+    title: "You have built a research foundation — the next step is confirming the protocol matches the actual limiting variable.",
+    body: "One to three months of research puts you ahead of most people who start. The question at this stage is not whether to start — it is whether the protocol design matches the actual limiting variable in your situation. Most researchers who have done the reading still start with the compound that sounds most interesting rather than the one that addresses the mechanism that is actually limiting their results. That mismatch is what produces the first plateau and the first round of reactive decisions.",
+    whatItMeans: "The Research Protocol Bible covers the starting point decision and the compound selection framework in detail — how to confirm the match between your limiting variable and the compound mechanism before committing to a protocol.",
+    auditMention: "A personalized protocol review — where your specific situation, goals, and research history get analyzed and the correct starting point gets identified for your case — is what the Protocol Audit is designed for. It is the difference between a framework and a diagnosis.",
+  },
+  r_pre_ready_experienced: {
+    tag: "Pre-Protocol — Experienced Researcher",
+    title: "Three months of research is a strong foundation — but the gap between knowing the framework and applying it correctly is where most protocols fail.",
+    body: "Experienced researchers who have spent three or more months in this space often have a clear picture of the compounds but a less clear picture of their own limiting variable. The phase framework is understood conceptually. The question is which phase applies to their specific starting point, and whether the protocol they are planning correctly addresses the mechanism that is actually limiting their results. Getting that match right before starting means fewer reactive decisions in weeks four through twelve.",
+    whatItMeans: "The Research Protocol Bible covers the compound selection framework from the starting point decision forward — how to identify the actual limiting variable, how to confirm the compound mechanism addresses it, and what the correct Foundation Gate looks like before starting.",
+    auditMention: "A personalized protocol review — where your specific situation, goals, and research history get analyzed against the diagnostic framework — is what the Protocol Audit is designed for. If you want a diagnosis rather than a framework before you start, that is the next step.",
+  },
+
+  // ─── EXISTING: Active protocol results (unchanged) ────────────────────────
   r_phase1_early: { tag: "Phase Identification", title: "You are still in the titration window.", body: "The first 4 weeks on a GLP-1 compound are a dose escalation and adjustment phase. Research suggests meaningful results typically appear after the effective dose range is reached and the body has adapted to the intake shift. Evaluating the compound before that window closes produces a misleading read.", whatItMeans: "The most common mistake at this stage is escalating the dose because nothing is visible yet. The data supports patience over escalation during weeks one through six." },
   r_no_intake: { tag: "Dose and Titration", title: "Intake is not yet suppressed — this is a titration variable, not a bottleneck.", body: "If hunger and food intake have not changed after several weeks, the compound is either under-dosed, still titrating, or there is a reconstitution or administration variable worth ruling out. Research on GLP-1 compounds shows intake suppression as the primary mechanism. If that is absent, the downstream fat loss effect has no mechanism to work through.", whatItMeans: "This is not a stacking question. It is a titration question. Adding support compounds on top of an ineffective foundation dose does not resolve the underlying issue." },
   r_caloric_audit: { tag: "Foundation Check", title: "The caloric picture needs to be established before the protocol can be evaluated.", body: "Metabolic rate adapts during extended GLP-1 protocols. What was a real deficit at week 4 may produce a much smaller deficit by week 12 — not because the compound stopped working, but because the body adjusted. Research consistently shows most plateaus at this stage resolve or become diagnosable once intake is tracked precisely for 7 days.", whatItMeans: "Running a 7-day tracked intake period before making any protocol change is the first step the RPB framework recommends at Phase 2. It is the check that most often identifies the actual problem fastest." },
@@ -572,6 +768,21 @@ const MULTI_RESULTS = {
 };
 
 const RESULT_GUIDE_MAP = {
+  // ─── NEW: Pre-protocol CTA map ─────────────────────────────────────────────
+  r_pre_foundation: { guide: "rpb", explanation: "The research guides cover the Foundation Gate framework — what each input does to compound efficacy, the order in which to address them, and what stable looks like before any protocol starts. Starting with the foundation correct produces cleaner results from week one and removes the most common source of unreadable protocol data.", auditMention: null },
+  r_pre_gi_concern: { guide: "reta", explanation: "The Retatrutide guide covers GI symptom management in detail — the three distinct presentations, the dose and timing variables that drive each one, and how to distinguish a manageable titration response from a signal that something else needs attention. Understanding this before starting means it is not a surprise when it happens.", auditMention: null },
+  r_pre_muscle_concern: { guide: "rpb", explanation: "The Research Protocol Bible covers lean mass preservation across all four protocol phases — which inputs protect it, when a GH support compound becomes the rational addition, and the sequencing logic that prevents the most common lean mass mistakes on an active fat loss protocol.", auditMention: null },
+  r_pre_sleep_concern: { guide: "reta", explanation: "The Retatrutide guide covers injection timing in detail — the mechanism behind morning versus evening injection, why timing matters differently for retatrutide than for other GLP-1 compounds, and what the data shows about sleep disruption as a timing variable. This is a non-issue when timing is correct from the start.", auditMention: null },
+  r_pre_general_concern: { guide: "rpb", explanation: "The Research Protocol Bible covers the full phase framework from the start — what each phase looks like, what normal variation looks like at each stage, and how to read results accurately rather than reacting to them. Researchers who understand these patterns before they happen make far fewer reactive decisions.", auditMention: null },
+  r_pre_glp1_mechanism: { guide: "reta", explanation: "The Retatrutide guide covers the full GLP-1 mechanism in plain language — what each receptor does, how that translates into observable results at each phase, and why the same compound works differently for different researchers depending on which mechanism is the active limiting variable.", auditMention: null },
+  r_pre_phase_logic: { guide: "rpb", explanation: "The Research Protocol Bible is built around the phase framework. It covers all four phases in detail — how to identify which one applies, what the rational compound logic is at each stage, and why the sequence matters more than the compound choice itself.", auditMention: null },
+  r_pre_compound_match: { guide: "rpb", explanation: "The Research Protocol Bible covers the GLP-1 starting point decision and the compound selection framework in the first chapter — how to identify which compound fits the actual limiting variable before starting, not after the first plateau.", auditMention: null },
+  r_pre_support_logic: { guide: "rpb", explanation: "The Research Protocol Bible covers the support compound decision framework — which bottleneck each support compound addresses, when that bottleneck becomes the active limiting variable, and why the sequencing matters more than the compound itself.", auditMention: null },
+  r_pre_early_researcher: { guide: "rpb", explanation: "The Research Protocol Bible is the logical starting point for researchers still building the picture. It covers the full framework — phase identification, compound selection logic, foundation requirements, and the bottleneck diagnostic system — before any protocol decision is made.", auditMention: null },
+  r_pre_ready: { guide: "rpb", explanation: "The Research Protocol Bible covers the starting point decision and the compound selection framework in detail — how to confirm the match between your limiting variable and the compound mechanism before committing to a protocol.", auditMention: "A personalized protocol review is a structured analysis where your specific situation, goals, and research history get mapped against the diagnostic framework and the correct starting point gets identified for your case. That is what the Protocol Audit is designed for." },
+  r_pre_ready_experienced: { guide: "rpb", explanation: "The Research Protocol Bible covers the compound selection framework from the starting point decision forward — how to identify the actual limiting variable, how to confirm the compound mechanism addresses it, and what the Foundation Gate looks like before starting.", auditMention: "A personalized protocol review applies the full diagnostic framework to your specific situation and identifies the correct starting point and sequencing for your case. If you want a diagnosis rather than a framework before you start, the Protocol Audit is that next step." },
+
+  // ─── EXISTING: Active protocol CTA map (unchanged) ───────────────────────
   r_phase1_early: { guide: "reta", explanation: "The Retatrutide: From First Dose to Full Protocol guide covers the titration window in detail — what the research shows about weeks one through six, how to read early signals correctly, and why escalating the dose before the effective range is established almost always produces a worse outcome than waiting. If you are in this window and unsure whether it is working, this guide gives you the framework to evaluate it without guessing." },
   r_no_intake: { guide: "reta", explanation: "The Retatrutide guide covers the intake suppression mechanism and what an absent appetite response actually signals. It walks through the three most common causes — under-dosing, active titration, and reconstitution error — and how to distinguish between them. If the compound is not suppressing appetite yet, this is where you find out why before changing anything." },
   r_caloric_audit: { guide: "reta", explanation: "The Retatrutide guide covers the Phase 2 metabolic adaptation pattern directly — why a real deficit at week 4 often becomes a marginal one by week 12, and how to run the 7-day intake audit that identifies the actual gap. Most plateaus at this stage are not compound failures. They are intake drift that becomes invisible without tracking. This guide shows you how to confirm which one you are dealing with." },
@@ -609,6 +820,10 @@ function getProgress(qid) {
   if (!qid) return 0;
   if (qid.startsWith("r_") || qid.startsWith("MULTI:")) return 100;
   const map = {
+    q_position: 3,
+    q_pre_goal: 10, q_pre_barrier: 18, q_pre_energy_barrier: 18,
+    q_pre_foundation: 28, q_pre_sideeffects: 28, q_pre_mechanism: 28,
+    q_pre_research_duration: 38, q_pre_landscape: 18,
     q_start: 5, q_glp1_duration: 15, q_glp1_early: 20, q_glp1_status: 20,
     q_glp1_no_start: 25, q_glp1_stall_context: 28, q_glp1_caloric: 32,
     q_p3_training: 28, q_p4_sleep: 28, q_gh_duration: 15, q_gh_early: 20,
@@ -627,20 +842,24 @@ function CTABlock({ resultKey }) {
   const isMultiKey = resultKey && resultKey.startsWith("MULTI:");
   const multiKey = isMultiKey ? resultKey.replace("MULTI:", "") : null;
   const multiResult = multiKey ? MULTI_RESULTS[multiKey] : null;
+
   const guideKey = isMultiKey
     ? (multiResult ? multiResult.guide : "rpb")
     : (RESULT_GUIDE_MAP[resultKey] ? RESULT_GUIDE_MAP[resultKey].guide : "rpb");
-  const explanation = !isMultiKey && RESULT_GUIDE_MAP[resultKey] ? RESULT_GUIDE_MAP[resultKey].explanation : null;
-  const guide = GUIDES[guideKey];
+
+  const ctaEntry = !isMultiKey ? RESULT_GUIDE_MAP[resultKey] : null;
+  const explanation = ctaEntry ? ctaEntry.explanation : null;
+  const auditMention = ctaEntry ? ctaEntry.auditMention : null;
 
   return (
     <div className="pt-cta-block">
-      <div className="pt-cta-label">Why this guide addresses your result</div>
+      <div className="pt-cta-label">Where to go next</div>
       {explanation && <p className="pt-cta-text">{explanation}</p>}
-      {guide && (
-        <a className="pt-pill" href={guide.url} target="_blank" rel="noopener noreferrer">
-          {guide.label}
-        </a>
+      <a className="pt-pill" href={CATALOG_URL} target="_blank" rel="noopener noreferrer">
+        Find the Right Guide
+      </a>
+      {auditMention && (
+        <p className="pt-audit-mention">{auditMention}</p>
       )}
     </div>
   );
@@ -648,7 +867,7 @@ function CTABlock({ resultKey }) {
 
 export default function App() {
   const [screen, setScreen] = useState("start");
-  const [history, setHistory] = useState(["q_start"]);
+  const [history, setHistory] = useState(["q_position"]);
   const [selected, setSelected] = useState([]);
   const [emailValue, setEmailValue] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -732,7 +951,7 @@ export default function App() {
     setEmailValue("");
     setSubmitError("");
     setIsSubmitting(false);
-    setHistory(["q_start"]);
+    setHistory(["q_position"]);
     setScreen("start");
   }
 
@@ -751,7 +970,7 @@ export default function App() {
           <h1 className="pt-title">Your protocol is not the problem. Finding the limiting variable is.</h1>
           <p className="pt-sell-line">Most people do not need another compound. They need a clearer read on what is actually failing.</p>
           <p className="pt-sell-sub">This tool identifies the likely bottleneck first. Then it routes you to the right research guide for your specific situation.</p>
-          <p className="pt-spec-line">4 phases · 7 bottlenecks · layered result routing · 3 minutes</p>
+          <p className="pt-spec-line">4 phases · 7 bottlenecks · layered result routing · 5 minutes</p>
           {screen === "start" && (
             <button className="pt-pill" onClick={() => setScreen("questions")}>Find Your Bottleneck</button>
           )}
@@ -794,7 +1013,7 @@ export default function App() {
         {screen === "gate" && (
           <div className="pt-gate-screen fade-in">
             <div className="pt-gate-eyebrow">Almost there</div>
-            <h2 className="pt-gate-title">Your bottleneck has been identified.</h2>
+            <h2 className="pt-gate-title">Your result has been identified.</h2>
             <p className="pt-gate-body">Enter your email to unlock your result and receive the free Protocol Stall Guide — a diagnostic framework for the most common Phase 2 fat loss plateau, built on the same system this tool uses.</p>
             <div className="pt-gate-divider" />
             <div className="pt-gate-form-label">Enter your email to unlock</div>
@@ -825,7 +1044,7 @@ export default function App() {
                 <p className="pt-result-body">{singleResult.body}</p>
                 {singleResult.whatItMeans && (
                   <div className="pt-result-what">
-                    <div className="pt-result-what-label">What this means for your protocol</div>
+                    <div className="pt-result-what-label">What this means for your research</div>
                     <p className="pt-result-what-text">{singleResult.whatItMeans}</p>
                   </div>
                 )}
