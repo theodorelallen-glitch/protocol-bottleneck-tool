@@ -156,7 +156,17 @@ const QUESTIONS = {
     ],
     multiNext: (ids) => {
       if (ids.includes("none") || ids.length === 0) return "q_pre_research_duration";
-      return "r_pre_foundation";
+      const hasSleep = ids.includes("sleep");
+      const hasProtein = ids.includes("protein");
+      const hasStimulant = ids.includes("stimulant");
+      if (hasSleep && hasProtein && hasStimulant) return "r_pre_foundation_all";
+      if (hasSleep && hasProtein) return "r_pre_foundation_sleep_protein";
+      if (hasSleep && hasStimulant) return "r_pre_foundation_sleep_stimulant";
+      if (hasProtein && hasStimulant) return "r_pre_foundation_protein_stimulant";
+      if (hasSleep) return "r_pre_foundation_sleep";
+      if (hasProtein) return "r_pre_foundation_protein";
+      if (hasStimulant) return "r_pre_foundation_stimulant";
+      return "q_pre_research_duration";
     },
   },
   q_pre_sideeffects: {
@@ -552,11 +562,53 @@ const QUESTIONS = {
 
 const RESULTS = {
   // ─── NEW: Pre-protocol results ─────────────────────────────────────────────
-  r_pre_foundation: {
-    tag: "Foundation — Pre-Protocol",
-    title: "The foundation needs to be stable before a compound has the conditions to work.",
-    body: "Every compound in the research literature produces its most meaningful results inside a reasonably stable physiological environment. Sleep deprivation suppresses the hormonal signaling that fat loss and recovery compounds depend on. Inadequate protein removes the substrate that lean mass preservation compounds are trying to work with. Daily stimulant use elevates cortisol and creates a ceiling on what any metabolic compound can accomplish. None of this is disqualifying. But adding a compound before correcting these inputs means running an experiment inside a broken environment — and the result, whatever it is, will not be readable.",
-    whatItMeans: "The research guides cover the Foundation Gate in full — what each input does to compound efficacy and the order in which to address them before starting any protocol. Starting here produces cleaner results and a more accurate read from week one.",
+  r_pre_foundation_sleep: {
+    tag: "Foundation — Sleep",
+    title: "Sleep is the first variable that needs to be stable — not the first compound to add.",
+    body: "GLP-1 compounds, GH secretagogues, and metabolic peptides all work through hormonal signaling pathways that sleep governs directly. Growth hormone is released primarily during slow-wave sleep. Cortisol, which suppresses fat mobilization and disrupts metabolic signaling, is regulated overnight. A researcher averaging under six hours or consistently poor quality sleep is starting inside a hormonal environment that actively works against what these compounds are designed to do. The compound will still have an effect — but it will be a fraction of what the research literature documents, and the result will not be readable enough to make informed decisions from.",
+    whatItMeans: "The Research Protocol Bible covers the Foundation Gate with sleep as the first check — specifically what inadequate sleep does to GLP-1 response, GH pulse amplitude, and cortisol patterning, and the practical steps to stabilize it before any protocol begins.",
+    auditMention: null,
+  },
+  r_pre_foundation_protein: {
+    tag: "Foundation — Protein Intake",
+    title: "Protein is the substrate lean mass preservation compounds are trying to work with — without it, they have nothing to protect.",
+    body: "Caloric restriction tells the body to break down stored energy. Fat is the target, but without an adequate protein signal, muscle is broken down alongside it. GH secretagogues and lean mass support compounds work by sending a preservation signal — but that signal requires adequate protein as the raw material. Research consistently shows that lean mass outcomes on fat loss protocols are more dependent on protein adequacy than on any support compound. A researcher who starts a protocol with inconsistent or insufficient protein is removing the substrate the protocol needs before the first injection.",
+    whatItMeans: "The Research Protocol Bible covers protein as a Foundation Gate variable — the specific intake targets relative to lean body mass, why GLP-1-driven appetite suppression so commonly pulls protein down alongside calories, and how to correct intake without disrupting the caloric environment driving fat loss.",
+    auditMention: null,
+  },
+  r_pre_foundation_stimulant: {
+    tag: "Foundation — Stimulant Load",
+    title: "Daily stimulant use sets a cortisol ceiling that no compound can work above.",
+    body: "Stimulants drive their effect through cortisol and catecholamine release — the same stress hormones that suppress fat mobilization, disrupt sleep architecture, and compete directly with the signaling pathways that metabolic compounds depend on. A researcher using stimulants daily to reach baseline function has a chronically elevated cortisol baseline. Every compound they add is working against that baseline rather than within a stable environment. The result is not just reduced efficacy — it is an unreadable result, because the cortisol variable makes it impossible to attribute changes to the compound rather than the stimulant interaction.",
+    whatItMeans: "The Research Protocol Bible covers the stimulant load variable in the Foundation Gate — what chronic use does to the cortisol baseline, how it contaminates the protocol read, and the correct sequencing for reducing stimulant dependence before starting any compound.",
+    auditMention: null,
+  },
+  r_pre_foundation_sleep_protein: {
+    tag: "Foundation — Sleep and Protein",
+    title: "Two foundation gaps running at the same time means any compound result will be unreadable.",
+    body: "Sleep deprivation suppresses the hormonal environment that compounds work through — GH pulsatility drops, cortisol rises, fat mobilization signaling is blunted. Inadequate protein removes the substrate that lean mass preservation depends on. When both are present before a protocol starts, the compound is being added to a system that is already actively losing the battle on two fronts. Research is clear that the compounding effect of these two gaps is not additive — inadequate sleep further reduces protein synthesis efficiency, which accelerates lean mass loss under restriction even before a compound enters the picture. Correcting both before starting produces a fundamentally different result than adding a compound first.",
+    whatItMeans: "The Research Protocol Bible covers both gaps in the Foundation Gate and the order in which to address them — sleep first because it governs protein synthesis efficiency, protein second because correcting intake without stable sleep produces a partial fix at best.",
+    auditMention: null,
+  },
+  r_pre_foundation_sleep_stimulant: {
+    tag: "Foundation — Sleep and Stimulant Load",
+    title: "Poor sleep and daily stimulant use are compounding the same cortisol problem from two directions.",
+    body: "Sleep deprivation elevates cortisol independently. Daily stimulant use elevates cortisol independently. When both are present, the cortisol baseline is not just high — it is being sustained from two directions simultaneously, which makes it resistant to the kind of compound-level interventions that are designed for a normally fluctuating cortisol pattern. Metabolic compounds, GLP-1 response, and GH pulsatility are all measurably suppressed in this environment. A researcher starting a protocol under these conditions is not just reducing efficacy — they are running an experiment that produces a misleading result regardless of what they add.",
+    whatItMeans: "The Research Protocol Bible covers both of these Foundation Gate variables together — why they compound rather than simply add, what the cortisol ceiling means for compound efficacy specifically, and the practical steps for addressing both before a protocol begins.",
+    auditMention: null,
+  },
+  r_pre_foundation_protein_stimulant: {
+    tag: "Foundation — Protein and Stimulant Load",
+    title: "Low protein and chronically elevated cortisol are pulling lean mass in the same direction before a protocol even starts.",
+    body: "Cortisol from daily stimulant use is catabolic — it signals the body to break down muscle tissue for energy. Inadequate protein removes the substrate needed to rebuild and preserve that tissue. Both inputs are working against lean mass at the same time. Adding a fat loss compound to this environment accelerates the caloric deficit without addressing either of the two variables that are already compromising the outcome. The lean mass result at the end of a protocol run under these conditions will reflect the stimulant and protein gap more than it reflects the compound.",
+    whatItMeans: "The Research Protocol Bible covers the interaction between cortisol load and protein adequacy in the Foundation Gate — why the combination is specifically damaging to lean mass outcomes, and the correct order for addressing both before any compound is introduced.",
+    auditMention: null,
+  },
+  r_pre_foundation_all: {
+    tag: "Foundation — Sleep, Protein, and Stimulant Load",
+    title: "All three foundation gaps are present — a compound will not produce a readable result in this environment.",
+    body: "Sleep deprivation, inadequate protein, and chronic stimulant use each independently reduce compound efficacy. Together they produce a physiological environment where fat mobilization is suppressed, lean mass is actively being broken down, cortisol is chronically elevated, and GH pulsatility is blunted. A compound added here will still have a pharmacological effect — but the result will reflect the three foundation gaps more than the compound itself. That is not just a reduced outcome. It is a result that actively misleads future protocol decisions because there is no way to attribute what happened to the compound versus the environment it entered.",
+    whatItMeans: "The Research Protocol Bible covers the full Foundation Gate in sequence — sleep first because it governs everything downstream, protein second because it is the substrate lean mass preservation requires, stimulant load third because correcting it without the first two in place produces an incomplete fix. The RPB gives you the framework for working through all three in the correct order before starting.",
     auditMention: null,
   },
   r_pre_gi_concern: {
@@ -769,7 +821,13 @@ const MULTI_RESULTS = {
 
 const RESULT_GUIDE_MAP = {
   // ─── NEW: Pre-protocol CTA map ─────────────────────────────────────────────
-  r_pre_foundation: { guide: "rpb", explanation: "The research guides cover the Foundation Gate framework — what each input does to compound efficacy, the order in which to address them, and what stable looks like before any protocol starts. Starting with the foundation correct produces cleaner results from week one and removes the most common source of unreadable protocol data.", auditMention: null },
+  r_pre_foundation_sleep: { guide: "rpb", explanation: "The Research Protocol Bible covers sleep as the first Foundation Gate variable — what inadequate sleep does to GH pulsatility, cortisol patterning, and GLP-1 response specifically, and the practical steps for stabilizing it before any protocol begins. Sleep is Gate 1 because every other input downstream is governed by it.", auditMention: null },
+  r_pre_foundation_protein: { guide: "rpb", explanation: "The Research Protocol Bible covers protein as a Foundation Gate variable and the specific intake targets relative to lean body mass. It explains why GLP-1-driven appetite suppression so commonly pulls protein down alongside calories and how to correct intake in the context of an active restriction environment without disrupting fat loss.", auditMention: null },
+  r_pre_foundation_stimulant: { guide: "rpb", explanation: "The Research Protocol Bible covers stimulant load in the Foundation Gate — what chronic daily use does to the cortisol baseline, how that baseline contaminates the protocol read, and the correct sequencing for reducing stimulant dependence before starting any compound. This is one of the most underdiagnosed variables in protocol failure.", auditMention: null },
+  r_pre_foundation_sleep_protein: { guide: "rpb", explanation: "The Research Protocol Bible covers both sleep and protein in the Foundation Gate and the correct order for addressing them — sleep first because it governs protein synthesis efficiency, protein second because correcting intake without stable sleep produces a partial result. Both gaps together require a specific sequencing that the RPB walks through in order.", auditMention: null },
+  r_pre_foundation_sleep_stimulant: { guide: "rpb", explanation: "The Research Protocol Bible covers the compounding interaction between sleep deprivation and stimulant-driven cortisol elevation — why together they produce a cortisol baseline that is resistant to compound-level correction, and the practical steps for addressing both before a protocol begins.", auditMention: null },
+  r_pre_foundation_protein_stimulant: { guide: "rpb", explanation: "The Research Protocol Bible covers the interaction between cortisol load and protein adequacy in the Foundation Gate — why the combination is specifically damaging to lean mass outcomes, and the correct order for addressing both before introducing any compound into the picture.", auditMention: null },
+  r_pre_foundation_all: { guide: "rpb", explanation: "The Research Protocol Bible covers the full Foundation Gate in sequence — all three variables in the correct order with the reasoning behind why sequence matters as much as correction. If all three gaps are present before starting, the RPB is the framework that tells you how to address them without losing months to an unreadable protocol.", auditMention: null },
   r_pre_gi_concern: { guide: "reta", explanation: "The Retatrutide guide covers GI symptom management in detail — the three distinct presentations, the dose and timing variables that drive each one, and how to distinguish a manageable titration response from a signal that something else needs attention. Understanding this before starting means it is not a surprise when it happens.", auditMention: null },
   r_pre_muscle_concern: { guide: "rpb", explanation: "The Research Protocol Bible covers lean mass preservation across all four protocol phases — which inputs protect it, when a GH support compound becomes the rational addition, and the sequencing logic that prevents the most common lean mass mistakes on an active fat loss protocol.", auditMention: null },
   r_pre_sleep_concern: { guide: "reta", explanation: "The Retatrutide guide covers injection timing in detail — the mechanism behind morning versus evening injection, why timing matters differently for retatrutide than for other GLP-1 compounds, and what the data shows about sleep disruption as a timing variable. This is a non-issue when timing is correct from the start.", auditMention: null },
